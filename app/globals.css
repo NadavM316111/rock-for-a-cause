@@ -1,26 +1,379 @@
-@import "tailwindcss";
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --ink: #0B0A0A;
+  --ink-2: #131110;
+  --line: rgba(239, 230, 212, 0.14);
+  --red: #C83C28;
+  --red-hi: #E04A2F;
+  --cream: #EFE6D4;
+  --sand: #D9C9A3;
+  --muted: #948A80;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--ink);
+  color: var(--cream);
+  font-family: var(--font-body), "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+::selection {
+  background: var(--red);
+  color: var(--cream);
+}
+
+/* Grain overlay so the black reads like print, not like a screen */
+.grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Layout helpers */
+.wrap {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 56px;
+  align-items: center;
+}
+
+@media (min-width: 920px) {
+  .hero-grid {
+    grid-template-columns: 1.06fr 0.94fr;
+    gap: 60px;
+  }
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (min-width: 820px) {
+  .facts {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.tiers {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 900px) {
+  .tiers {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 44px;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .split {
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 60px;
+  }
+}
+
+.partner-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 700px) {
+  .partner-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 820px) {
+  .info-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.foot-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+}
+
+@media (min-width: 820px) {
+  .foot-grid {
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 48px;
+  }
+}
+
+.desktop-only {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .desktop-only {
+    display: flex;
+  }
+}
+
+/* Scrolling marquee */
+@keyframes sr-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: sr-marquee 30s linear infinite;
+}
+
+/* Hover states */
+.btn-red {
+  transition: background 0.16s ease;
+}
+.btn-red:hover {
+  background: var(--red-hi) !important;
+}
+
+.btn-ghost {
+  transition: background 0.16s ease, color 0.16s ease;
+}
+.btn-ghost:hover {
+  background: var(--cream) !important;
+  color: var(--ink) !important;
+}
+
+.navlink {
+  transition: color 0.16s ease;
+}
+.navlink:hover {
+  color: var(--red-hi) !important;
+}
+
+.tier {
+  transition: transform 0.18s ease, background 0.18s ease;
+}
+.tier:hover {
+  transform: translateY(-5px);
+}
+
+.social-link {
+  transition: color 0.16s ease;
+}
+.social-link:hover {
+  color: var(--red-hi) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+  .tier:hover {
+    transform: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+/* ==================================================================
+   MOBILE
+   ================================================================== */
+
+/* Facts bar goes to two columns, so each row needs its own left edge */
+@media (max-width: 819px) {
+  .facts > *:nth-child(odd) {
+    border-left: 1px solid var(--line) !important;
+  }
+}
+
+/* Ticket tiers stack, so dividers have to turn horizontal */
+@media (max-width: 899px) {
+  .tiers > * {
+    border-right: none !important;
+  }
+  .tiers > *:not(:last-child) {
+    border-bottom: 1px solid var(--line) !important;
+  }
+}
+
+/* FAQ and band grids stack */
+@media (max-width: 819px) {
+  .info-grid > * {
+    border-right: none !important;
+  }
+  .info-grid:not(.band-grid) > *:not(:last-child) {
+    border-bottom: 1px solid var(--line) !important;
+  }
+  .band-grid > * {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    border-left: none !important;
+  }
+}
+
+/* The offset red frame gets clipped on narrow screens */
+@media (max-width: 919px) {
+  .hero-frame {
+    display: none !important;
+  }
+}
+
+/* Tighter vertical rhythm on phones */
+@media (max-width: 759px) {
+  main > section:not(#top):not(#show) {
+    padding-top: 60px !important;
+    padding-bottom: 60px !important;
+  }
+  .wrap {
+    padding: 0 18px;
+  }
+}
+
+@media (max-width: 420px) {
+  .hdr-cta {
+    padding: 10px 14px !important;
+    font-size: 11px !important;
+    letter-spacing: 0.1em !important;
+  }
+}
+
+/* ---------------- Mobile menu ---------------- */
+
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+@media (min-width: 900px) {
+  .hamburger {
+    display: none;
+  }
+}
+
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--cream);
+}
+
+.menu-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--ink);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 26px;
+}
+
+.menu-panel a {
+  font-family: var(--font-display), Impact, sans-serif;
+  font-size: 34px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--cream);
+  padding: 15px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.menu-panel a:last-of-type {
+  color: var(--red);
+  border-bottom: none;
+}
+
+.menu-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: var(--cream);
+  font-size: 32px;
+  line-height: 1;
+  padding: 8px;
+}
+
+/* ---------------- Streaming embeds ---------------- */
+
+.embed-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+@media (min-width: 860px) {
+  .embed-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+  }
+}
+
+.embed-row iframe {
+  width: 100%;
+  border: 0;
+  display: block;
 }
