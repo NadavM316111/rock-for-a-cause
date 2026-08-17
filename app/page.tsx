@@ -1036,8 +1036,8 @@ export default function Page() {
               textAlign: "center",
             }}
           >
-            All ticketing is handled through Eventbrite. Proceeds benefit the
-            Boys &amp; Girls Clubs of Broward County.
+            Proceeds benefit the
+            Boys &amp; Girls Club of Broward County.
           </p>
         </div>
       </section>
@@ -1064,10 +1064,10 @@ export default function Page() {
               }}
             >
               <p style={{ fontSize: 17, lineHeight: 1.72, color: C.muted }}>
-                South Florida rock built on the stuff that came out of the
-                eighties and nineties: real guitars, real drums, choruses meant
-                to be shouted back. We write our own songs and we play them
-                loud.
+                South Florida alternative rock band inspired by artists from the
+                eighties and nineties: real guitars, loud drums, audience interaction.
+                We write our own songs and we play them
+                loud. We also cover your favorite songs spanning decades of rock and pop.
               </p>
               <p
                 style={{
