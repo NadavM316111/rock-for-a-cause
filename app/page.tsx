@@ -775,7 +775,7 @@ export default function Page() {
               <div style={{ position: "relative", width: "100%", height: 170 }}>
                 <Image
                   src="/logo-bgc.jpeg"
-                  alt="Boys & Girls Clubs of Broward County"
+                  alt="Boys & Girls Club of Broward County"
                   fill
                   sizes="(max-width: 900px) 90vw, 300px"
                   style={{ objectFit: "contain" }}
@@ -793,7 +793,7 @@ export default function Page() {
                   color: C.cream,
                 }}
               >
-                Boys &amp; Girls Clubs of Broward County
+                Boys &amp; Girls Club of Broward County
               </h3>
               <p
                 style={{
@@ -804,10 +804,9 @@ export default function Page() {
                 }}
               >
                 After the last bell rings, thousands of kids in Broward County
-                have nowhere to be. The Boys &amp; Girls Clubs give them
-                somewhere: homework help, hot meals, mentors who learn their
-                names, and programs in art, sports, and music that most families
-                could not otherwise afford.
+                have nowhere to be. The Boys &amp; Girls Club provides: homework help, 
+                hot meals, one on one mentorship, and programs in art, sports, 
+                and music that most families could not otherwise afford.
               </p>
               <p
                 style={{
