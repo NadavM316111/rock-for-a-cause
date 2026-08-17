@@ -272,7 +272,7 @@ const TIERS = [
       "Meet and greet with the band",
       "Signed commemorative concert poster",
       "Photo with the band",
-      "Recognition on this site and on event t-shirt",
+      "Recognition on this site and receive free event t-shirt",
     ],
   },
 ];
