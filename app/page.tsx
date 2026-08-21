@@ -12,6 +12,7 @@ const NAV: [string, string][] = [
   ["The Cause", "#cause"],
   ["Tickets", "#tickets"],
   ["The Band", "#band"],
+  ["Parking", "#parking"],
 ];
 
 const SONGS = [
@@ -247,7 +248,7 @@ const TIERS = [
     perks: [
       "Admission to the concert",
       "Access to all performances",
-      "Support two incredible organizations",
+      "Support incredible organizations",
     ],
   },
   {
@@ -290,6 +291,8 @@ const BENEFICIARIES = [
     name: "Boys & Girls Club of Broward County",
     logo: IMG.bgc,
     alt: "Boys & Girls Club of Broward County",
+    site: "https://bgcbc.org",
+    siteLabel: "bgcbc.org",
     body: [
       "After the last bell rings, thousands of kids in Broward County have nowhere to be. The Boys & Girls Club provides: homework help, hot meals, one on one mentorship, and programs in art, sports, and music that most families could not otherwise afford.",
       "We are a band that got to learn instruments because someone made room for us to. This show is about making that room for somebody else.",
@@ -299,8 +302,10 @@ const BENEFICIARIES = [
     name: "JAFCO",
     logo: IMG.jafco,
     alt: "JAFCO",
+    site: "https://jafco.org",
+    siteLabel: "jafco.org",
     body: [
-      "JAFCO is there for South Florida children who have been abused, neglected, or abandoned, and for children with developmental disabilities. Emergency shelter, foster care, therapy, and support for the whole family, all on one campus in Broward County.",
+      "JAFCO is there for South Florida children impacted by abuse, neglect, and trauma, and for children with developmental disabilities. Emergency shelter, group homes, foster care, therapy, and support for the whole family, on one campus in Broward County.",
       "Kids walk in on the worst day of their lives and find people whose only job is to take care of them. Your ticket helps keep that going.",
     ],
   },
@@ -364,7 +369,7 @@ export default function Page() {
             />
           </a>
 
-          <nav className="desktop-only" style={{ gap: 28, alignItems: "center" }}>
+          <nav className="desktop-only" style={{ gap: 22, alignItems: "center" }}>
             {NAV.map(([label, href]) => (
               <a
                 key={href}
@@ -373,9 +378,10 @@ export default function Page() {
                 style={{
                   fontSize: 12,
                   fontWeight: 700,
-                  letterSpacing: "0.16em",
+                  letterSpacing: "0.14em",
                   textTransform: "uppercase",
                   color: C.cream,
+                  whiteSpace: "nowrap",
                 }}
               >
                 {label}
@@ -817,11 +823,32 @@ export default function Page() {
                 >
                   {b.name}
                 </h3>
+
+                <a
+                  href={b.site}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="social-link"
+                  style={{
+                    display: "inline-block",
+                    marginTop: 12,
+                    fontSize: 12,
+                    fontWeight: 700,
+                    letterSpacing: "0.16em",
+                    textTransform: "uppercase",
+                    color: C.cream,
+                    borderBottom: `1px solid ${C.red}`,
+                    paddingBottom: 3,
+                  }}
+                >
+                  {b.siteLabel}
+                </a>
+
                 {b.body.map((para, j) => (
                   <p
                     key={j}
                     style={{
-                      marginTop: j === 0 ? 20 : 18,
+                      marginTop: j === 0 ? 22 : 18,
                       fontSize: 17,
                       lineHeight: 1.72,
                       color: C.muted,
@@ -1418,6 +1445,33 @@ export default function Page() {
                 with School of Rock Miami, benefiting the Boys &amp; Girls Clubs
                 of Broward County and JAFCO.
               </p>
+              <div
+                style={{
+                  display: "flex",
+                  gap: 18,
+                  marginTop: 16,
+                  flexWrap: "wrap",
+                }}
+              >
+                <a
+                  href="https://bgcbc.org"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="social-link"
+                  style={{ fontSize: 14, color: C.muted }}
+                >
+                  bgcbc.org
+                </a>
+                <a
+                  href="https://jafco.org"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="social-link"
+                  style={{ fontSize: 14, color: C.muted }}
+                >
+                  jafco.org
+                </a>
+              </div>
             </div>
 
             <div>
