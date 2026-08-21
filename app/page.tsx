@@ -37,6 +37,7 @@ const IMG = {
   sr: "/logo-sr.jpg",
   bgc: "/logo-bgc.jpeg",
   sor: "/logo-sor.jpg",
+  jafco: "/logo-jafco.png",
 };
 
 const C = {
@@ -284,6 +285,27 @@ const FACTS = [
   { label: "Ages", value: "All Ages", sub: "Everyone welcome" },
 ];
 
+const BENEFICIARIES = [
+  {
+    name: "Boys & Girls Club of Broward County",
+    logo: IMG.bgc,
+    alt: "Boys & Girls Club of Broward County",
+    body: [
+      "After the last bell rings, thousands of kids in Broward County have nowhere to be. The Boys & Girls Club provides: homework help, hot meals, one on one mentorship, and programs in art, sports, and music that most families could not otherwise afford.",
+      "We are a band that got to learn instruments because someone made room for us to. This show is about making that room for somebody else.",
+    ],
+  },
+  {
+    name: "JAFCO",
+    logo: IMG.jafco,
+    alt: "JAFCO",
+    body: [
+      "JAFCO is there for South Florida children who have been abused, neglected, or abandoned, and for children with developmental disabilities. Emergency shelter, foster care, therapy, and support for the whole family, all on one campus in Broward County.",
+      "Kids walk in on the worst day of their lives and find people whose only job is to take care of them. Your ticket helps keep that going.",
+    ],
+  },
+];
+
 /* ------------------------------------------------------------------ */
 
 export default function Page() {
@@ -323,7 +345,6 @@ export default function Page() {
           }}
         >
           <a
-          
             href="#top"
             aria-label="Static Rebellion"
             style={{
@@ -346,7 +367,6 @@ export default function Page() {
           <nav className="desktop-only" style={{ gap: 28, alignItems: "center" }}>
             {NAV.map(([label, href]) => (
               <a
-              
                 key={href}
                 href={href}
                 className="navlink"
@@ -372,7 +392,6 @@ export default function Page() {
             }}
           >
             <a
-            
               href={TICKETS}
               target="_blank"
               rel="noopener noreferrer"
@@ -419,7 +438,6 @@ export default function Page() {
             </a>
           ))}
           <a
-          
             href={TICKETS}
             target="_blank"
             rel="noopener noreferrer"
@@ -439,7 +457,7 @@ export default function Page() {
           aria-hidden="true"
           style={{
             position: "absolute",
-           top: -180,
+            top: -180,
             left: -180,
             width: 640,
             height: 640,
@@ -544,7 +562,7 @@ export default function Page() {
                 >
                   Get Tickets
                 </a>
-                
+
                 <a
                   href="#cause"
                   className="btn-ghost"
@@ -722,7 +740,6 @@ export default function Page() {
                   allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                 />
                 <a
-                
                   href={s.apple}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -762,85 +779,80 @@ export default function Page() {
             }
           />
 
-          <div className="split">
+          {BENEFICIARIES.map((b, i) => (
             <div
-              style={{
-                background: C.cream,
-                padding: 34,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
+              key={b.name}
+              className="split"
+              style={{ marginTop: i === 0 ? 0 : 72 }}
             >
-              <div style={{ position: "relative", width: "100%", height: 170 }}>
-                <Image
-                  src="/logo-bgc.jpeg"
-                  alt="Boys & Girls Club of Broward County"
-                  fill
-                  sizes="(max-width: 900px) 90vw, 300px"
-                  style={{ objectFit: "contain" }}
-                />
-              </div>
-            </div>
-
-            <div>
-              <h3
-                style={{
-                  fontFamily: display,
-                  fontSize: "clamp(26px, 3.6vw, 38px)",
-                  lineHeight: 1.04,
-                  textTransform: "uppercase",
-                  color: C.cream,
-                }}
-              >
-                Boys &amp; Girls Club of Broward County
-              </h3>
-              <p
-                style={{
-                  marginTop: 20,
-                  fontSize: 17,
-                  lineHeight: 1.72,
-                  color: C.muted,
-                }}
-              >
-                After the last bell rings, thousands of kids in Broward County
-                have nowhere to be. The Boys &amp; Girls Club provides: homework help, 
-                hot meals, one on one mentorship, and programs in art, sports, 
-                and music that most families could not otherwise afford.
-              </p>
-              <p
-                style={{
-                  marginTop: 18,
-                  fontSize: 17,
-                  lineHeight: 1.72,
-                  color: C.muted,
-                }}
-              >
-                We are a band that got to learn instruments because someone made
-                room for us to. This show is about making that room for somebody
-                else.
-              </p>
-
               <div
                 style={{
-                  marginTop: 30,
-                  borderLeft: `3px solid ${C.red}`,
-                  paddingLeft: 20,
+                  background: C.cream,
+                  padding: 34,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                <p
+                <div style={{ position: "relative", width: "100%", height: 170 }}>
+                  <Image
+                    src={b.logo}
+                    alt={b.alt}
+                    fill
+                    sizes="(max-width: 900px) 90vw, 300px"
+                    style={{ objectFit: "contain" }}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <h3
                   style={{
                     fontFamily: display,
-                    fontSize: 21,
-                    lineHeight: 1.24,
+                    fontSize: "clamp(26px, 3.6vw, 38px)",
+                    lineHeight: 1.04,
                     textTransform: "uppercase",
                     color: C.cream,
                   }}
                 >
-                  Kids playing music, so other kids get a shot at it.
-                </p>
+                  {b.name}
+                </h3>
+                {b.body.map((para, j) => (
+                  <p
+                    key={j}
+                    style={{
+                      marginTop: j === 0 ? 20 : 18,
+                      fontSize: 17,
+                      lineHeight: 1.72,
+                      color: C.muted,
+                    }}
+                  >
+                    {para}
+                  </p>
+                ))}
               </div>
             </div>
+          ))}
+
+          <div
+            style={{
+              marginTop: 56,
+              borderLeft: `3px solid ${C.red}`,
+              paddingLeft: 20,
+            }}
+          >
+            <p
+              style={{
+                fontFamily: display,
+                fontSize: "clamp(21px, 2.8vw, 30px)",
+                lineHeight: 1.24,
+                textTransform: "uppercase",
+                color: C.cream,
+                maxWidth: 620,
+              }}
+            >
+              Kids playing music, so other kids get a shot at it.
+            </p>
           </div>
 
           {/* Partners */}
@@ -848,8 +860,8 @@ export default function Page() {
             <Eyebrow>A joint effort between</Eyebrow>
             <div className="partner-row" style={{ marginTop: 24 }}>
               {[
-                { src: "/logo-sr.jpg", alt: "Static Rebellion", dark: true },
-                { src: "/logo-sor.jpg", alt: "School of Rock Miami", dark: false },
+                { src: IMG.sr, alt: "Static Rebellion", dark: true },
+                { src: IMG.sor, alt: "School of Rock Miami", dark: false },
               ].map((p) => (
                 <div
                   key={p.alt}
@@ -1036,8 +1048,8 @@ export default function Page() {
               textAlign: "center",
             }}
           >
-            Proceeds benefit the
-            Boys &amp; Girls Club of Broward County.
+            Proceeds benefit the Boys &amp; Girls Club of Broward County and
+            JAFCO.
           </p>
         </div>
       </section>
@@ -1166,6 +1178,92 @@ export default function Page() {
         </div>
       </section>
 
+      {/* ---------------- PARKING ---------------- */}
+      <section
+        id="parking"
+        style={{
+          padding: "84px 0",
+          borderTop: `1px solid ${C.line}`,
+        }}
+      >
+        <div className="wrap">
+          <SectionTitle
+            kicker="Getting there"
+            title={
+              <>
+                Parking
+                <br />
+                <span style={{ color: C.red }}>is handled</span>
+              </>
+            }
+          />
+
+          <div
+            style={{
+              border: `1px solid ${C.line}`,
+              padding: "38px 34px",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                gap: 16,
+              }}
+            >
+              <span style={{ marginTop: 8 }}>
+                <Bolt size={14} />
+              </span>
+              <p
+                style={{
+                  fontFamily: display,
+                  fontSize: "clamp(24px, 4vw, 40px)",
+                  lineHeight: 1.08,
+                  textTransform: "uppercase",
+                  color: C.cream,
+                }}
+              >
+                Metered and valet parking offered at event
+              </p>
+            </div>
+
+            <p
+              style={{
+                marginTop: 22,
+                fontSize: 17,
+                lineHeight: 1.7,
+                color: C.muted,
+                maxWidth: 560,
+              }}
+            >
+              Pull up to 471 NW 3rd Street and hand off the keys, or park at a
+              street meter nearby. Give yourself a few extra minutes if you are
+              coming for the 1:30 PM doors.
+            </p>
+
+            <a
+              href={MAPS}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-link"
+              style={{
+                display: "inline-block",
+                marginTop: 24,
+                fontSize: 12,
+                fontWeight: 700,
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                color: C.cream,
+                borderBottom: `1px solid ${C.red}`,
+                paddingBottom: 3,
+              }}
+            >
+              Get Directions
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* ---------------- KNOW BEFORE YOU GO ---------------- */}
       <section
         style={{
@@ -1192,16 +1290,25 @@ export default function Page() {
                 a: "471 NW 3rd Street, Miami, Florida. Tap the address in the footer for directions.",
               },
               {
+                q: "Where do I park?",
+                a: "Metered and valet parking are offered at the event. See the parking section above.",
+              },
+              {
                 q: "How do I sponsor or donate more?",
                 a: "Email booking@staticrebellion.com and we will connect you with the right people.",
               },
-            ].map((item, i) => (
+              {
+                q: "Who does the money help?",
+                a: "The Boys & Girls Club of Broward County and JAFCO, both serving kids right here in Broward.",
+              },
+            ].map((item, i, arr) => (
               <div
                 key={item.q}
                 style={{
                   padding: 32,
                   borderRight: i % 2 === 0 ? `1px solid ${C.line}` : "none",
-                  borderBottom: i < 2 ? `1px solid ${C.line}` : "none",
+                  borderBottom:
+                    i < arr.length - 2 ? `1px solid ${C.line}` : "none",
                 }}
               >
                 <h4
@@ -1291,7 +1398,7 @@ export default function Page() {
             <div>
               <div style={{ position: "relative", width: 150, height: 48 }}>
                 <Image
-                  src="/logo-sr.jpg"
+                  src={IMG.sr}
                   alt="Static Rebellion"
                   fill
                   sizes="150px"
@@ -1309,7 +1416,7 @@ export default function Page() {
               >
                 Rock for a Cause is presented by Static Rebellion in partnership
                 with School of Rock Miami, benefiting the Boys &amp; Girls Clubs
-                of Broward County.
+                of Broward County and JAFCO.
               </p>
             </div>
 
@@ -1330,7 +1437,8 @@ export default function Page() {
                 <div>Sunday, October 18, 2026</div>
                 <div>2:00 PM to 6:00 PM</div>
                 <div>Doors at 1:30 PM</div>
-                  <a
+                <div>Metered and valet parking</div>
+                <a
                   href={MAPS}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -1364,7 +1472,6 @@ export default function Page() {
                 }}
               >
                 <a
-                
                   href="https://instagram.com/staticrebellion"
                   target="_blank"
                   rel="noopener noreferrer"
