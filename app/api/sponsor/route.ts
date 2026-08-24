@@ -35,7 +35,10 @@ export async function POST(req: Request) {
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) {
       console.error("RESEND_API_KEY is not set");
-      return NextResponse.json({ error: "Mailer not configured" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Mailer not configured" },
+        { status: 500 }
+      );
     }
 
     const res = await fetch("https://api.resend.com/emails", {
@@ -45,7 +48,9 @@ export async function POST(req: Request) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: process.env.SPONSOR_FROM || "Rock for a Cause <onboarding@resend.dev>",
+        from:
+          process.env.SPONSOR_FROM ||
+          "Rock for a Cause <onboarding@resend.dev>",
         to: RECIPIENTS,
         reply_to: email,
         subject: `Sponsorship inquiry: ${company} (${tier})`,

@@ -31,6 +31,17 @@ const SONGS = [
 const MAPS =
   "https://www.google.com/maps/search/?api=1&query=471+NW+3rd+St+Miami+FL";
 
+const SOR_SITE = "https://www.schoolofrock.com/locations/miami";
+
+const SOR_SOCIALS = [
+  { label: "@schoolofrockmiami", href: "https://instagram.com/schoolofrockmiami" },
+  { label: "@schoolofrockdoral", href: "https://instagram.com/schoolofrockdoral" },
+  {
+    label: "@schoolofrockcoconutgrove",
+    href: "https://instagram.com/schoolofrockcoconutgrove",
+  },
+];
+
 const DOORS = new Date("2026-10-18T13:30:00-04:00").getTime();
 
 /* Asset filenames, matching what is in /public */
@@ -297,7 +308,7 @@ const TIERS = [
     accent: true,
     tag: "Best Seats",
     perks: [
-      "Premium front row seating",
+      "Premium VIP seating",
       "Meet and greet with the band",
       "Signed commemorative concert poster",
       "Photo with the band",
@@ -321,7 +332,7 @@ const BENEFICIARIES = [
     site: "https://bgcbc.org",
     siteLabel: "bgcbc.org",
     body: [
-      "After the last bell rings, thousands of kids in Broward County have nowhere to be. The Boys & Girls Club provides: homework help, hot meals, one on one mentorship, and programs in art, sports, and music that most families could not otherwise afford.",
+      "After the last bell rings, thousands of kids in South Florida have nowhere to be. The Boys & Girls Club provides: homework help, hot meals, one on one mentorship, and programs in art, sports, and music that most families could not otherwise afford.",
       "We are a band that got to learn instruments because someone made room for us to. This show is about making that room for somebody else.",
     ],
   },
@@ -426,6 +437,8 @@ const SPONSOR_TIERS = [
       "Premier logo placement on all event materials",
       "Featured recognition as Presenting Sponsor",
       "On-stage acknowledgment during the event",
+      "A representative from your business addresses the audience live on stage for a few minutes",
+      "Presentation of a plaque by Static Rebellion recognizing your community alliance",
       "Dedicated sponsor spotlight on the event website",
       "Premium booth or display space, if desired",
       "Fifteen VIP tickets",
@@ -832,6 +845,7 @@ export default function Page() {
               {label}
             </a>
           ))}
+
           <a
             href={TICKETS}
             target="_blank"
@@ -928,8 +942,8 @@ export default function Page() {
                 }}
               >
                 Static Rebellion and School of Rock Miami are taking one stage for
-                one afternoon, and every ticket goes to work for kids in Broward
-                County. Loud room, good reason.
+                one afternoon, and every ticket goes to work for kids in South
+                Florida. Loud room, good reason.
               </p>
 
               <div
@@ -1305,6 +1319,26 @@ export default function Page() {
                 </div>
               ))}
             </div>
+
+            <a
+              href={SOR_SITE}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-link"
+              style={{
+                display: "inline-block",
+                marginTop: 18,
+                fontSize: 12,
+                fontWeight: 700,
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                color: C.cream,
+                borderBottom: `1px solid ${C.red}`,
+                paddingBottom: 3,
+              }}
+            >
+              schoolofrock.com/locations/miami
+            </a>
           </div>
         </div>
       </section>
@@ -1923,6 +1957,65 @@ export default function Page() {
                 stage with us all afternoon. Some of them are playing their first
                 real show. That alone is worth the ticket.
               </p>
+
+              <a
+                href={SOR_SITE}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-link"
+                style={{
+                  display: "inline-block",
+                  marginTop: 20,
+                  fontSize: 12,
+                  fontWeight: 700,
+                  letterSpacing: "0.16em",
+                  textTransform: "uppercase",
+                  color: C.cream,
+                  borderBottom: `1px solid ${C.red}`,
+                  paddingBottom: 3,
+                }}
+              >
+                schoolofrock.com/locations/miami
+              </a>
+
+              <div
+                style={{
+                  fontSize: 10,
+                  fontWeight: 700,
+                  letterSpacing: "0.24em",
+                  textTransform: "uppercase",
+                  color: C.red,
+                  marginTop: 28,
+                  marginBottom: 14,
+                }}
+              >
+                Follow School of Rock
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 10,
+                  alignItems: "flex-start",
+                }}
+              >
+                {SOR_SOCIALS.map((s) => (
+                  <a
+                    key={s.href}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-link"
+                    style={{
+                      fontSize: 15,
+                      color: C.muted,
+                    }}
+                  >
+                    {s.label}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -1973,7 +2066,7 @@ export default function Page() {
                   color: C.cream,
                 }}
               >
-                Metered and valet parking offered at event
+                Metered and paid valet parking offered at event
               </p>
             </div>
 
@@ -1986,9 +2079,9 @@ export default function Page() {
                 maxWidth: 560,
               }}
             >
-              Pull up to 471 NW 3rd Street and hand off the keys, or park at a
-              street meter nearby. Give yourself a few extra minutes if you are
-              coming for the 1:30 PM doors.
+              Pull up to 471 NW 3rd Street and hand off the keys for paid valet,
+              or park at a street meter nearby. Give yourself a few extra minutes
+              if you are coming for the 1:30 PM doors.
             </p>
 
             <a
@@ -2032,6 +2125,14 @@ export default function Page() {
                 a: "Doors open at 1:30 PM and music starts at 2:00 PM. VIP and Rock Star Sponsor ticket holders get in at 1:00 PM.",
               },
               {
+                q: "What must I bring to enter?",
+                a: "The event email confirming your ticket purchase.",
+              },
+              {
+                q: "Will there be food?",
+                a: "Yes, there will be several food trucks as well as one kosher food truck. Food available for purchase.",
+              },
+              {
                 q: "Is this really all ages?",
                 a: "Yes. Bring your family, bring your grandmother, bring the kid who just started guitar lessons.",
               },
@@ -2041,11 +2142,11 @@ export default function Page() {
               },
               {
                 q: "Where do I park?",
-                a: "Metered and valet parking are offered at the event. See the parking section above.",
+                a: "Metered and paid valet parking are offered at the event. See the parking section above.",
               },
               {
                 q: "Who does the money help?",
-                a: "The Boys & Girls Club of Broward County and JAFCO, both serving kids right here in Broward.",
+                a: "The Boys & Girls Club of Broward County and JAFCO, both serving kids right here in South Florida.",
               },
               {
                 q: "Can my business get involved?",
@@ -2177,23 +2278,16 @@ export default function Page() {
                   flexWrap: "wrap",
                 }}
               >
-                <a
-                  href="https://bgcbc.org"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="social-link"
-                  style={{ fontSize: 14, color: C.muted }}
-                >
+                <a href="https://bgcbc.org" target="_blank" rel="noopener noreferrer" className="social-link" style={{ fontSize: 14, color: C.muted }}>
                   bgcbc.org
                 </a>
-                <a
-                  href="https://jafco.org"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="social-link"
-                  style={{ fontSize: 14, color: C.muted }}
-                >
+
+                <a href="https://jafco.org" target="_blank" rel="noopener noreferrer" className="social-link" style={{ fontSize: 14, color: C.muted }}>
                   jafco.org
+                </a>
+
+                <a href={SOR_SITE} target="_blank" rel="noopener noreferrer" className="social-link" style={{ fontSize: 14, color: C.muted }}>
+                  schoolofrock.com/locations/miami
                 </a>
               </div>
             </div>
@@ -2215,14 +2309,8 @@ export default function Page() {
                 <div>Sunday, October 18, 2026</div>
                 <div>2:00 PM to 6:00 PM</div>
                 <div>Doors at 1:30 PM</div>
-                <div>Metered and valet parking</div>
-                <a
-                  href={MAPS}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="social-link"
-                  style={{ color: C.cream, borderBottom: `1px solid ${C.line}` }}
-                >
+                <div>Metered and paid valet parking</div>
+                <a href={MAPS} target="_blank" rel="noopener noreferrer" className="social-link" style={{ color: C.cream, borderBottom: `1px solid ${C.line}` }}>
                   471 NW 3rd St, Miami, FL
                 </a>
               </div>
@@ -2249,30 +2337,21 @@ export default function Page() {
                   fontSize: 15,
                 }}
               >
-                <a
-                  href="https://instagram.com/staticrebellion"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="social-link"
-                  style={{ color: C.muted }}
-                >
+                <a href="https://instagram.com/staticrebellion" target="_blank" rel="noopener noreferrer" className="social-link" style={{ color: C.muted }}>
                   Instagram @staticrebellion
                 </a>
-                <a
-                  href="https://tiktok.com/@static.rebellion"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="social-link"
-                  style={{ color: C.muted }}
-                >
+
+                <a href="https://tiktok.com/@static.rebellion" target="_blank" rel="noopener noreferrer" className="social-link" style={{ color: C.muted }}>
                   TikTok @static.rebellion
                 </a>
 
-                <a
-                  href="mailto:booking@staticrebellion.com"
-                  className="social-link"
-                  style={{ color: C.muted }}
-                >
+                {SOR_SOCIALS.map((s) => (
+                  <a key={s.href} href={s.href} target="_blank" rel="noopener noreferrer" className="social-link" style={{ color: C.muted }}>
+                    Instagram {s.label}
+                  </a>
+                ))}
+
+                <a href="mailto:booking@staticrebellion.com" className="social-link" style={{ color: C.muted }}>
                   booking@staticrebellion.com
                 </a>
 
