@@ -381,7 +381,7 @@ const SPONSOR_WALL: {
   },
   {
     tier: "Silver",
-    count: 7,
+    count: 6,
     height: 118,
     columns: "repeat(auto-fit, minmax(150px, 1fr))",
     palette: M.silver,
