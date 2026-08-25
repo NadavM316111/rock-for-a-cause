@@ -1824,10 +1824,10 @@ export default function Page() {
                     color: C.cream,
                   }}
                 >
-                  <Bolt size={11} />
-                  <span>50% Boys &amp; Girls Club of Broward County</span>
-                  <Bolt size={11} />
-                  <span>50% JAFCO</span>
+                  <Bolt size={11} aria-hidden="true" />
+<span>50% Boys &amp; Girls Clubs of Broward County</span>
+<Bolt size={11} aria-hidden="true" />
+<span>50% JAFCO</span>
                 </div>
               </div>
 
