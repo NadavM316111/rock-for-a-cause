@@ -76,30 +76,47 @@ const display = "var(--font-display), Impact, sans-serif";
 
 /* ------------------------------------------------------------------ */
 
-function Bolt({ size = 14, color = C.red }: { size?: number; color?: string }) {
+type IconProps = {
+  size?: number;
+  color?: string;
+  style?: React.CSSProperties;
+  "aria-hidden"?: boolean | "true" | "false";
+};
+
+function Bolt({
+  size = 14,
+  color = C.red,
+  style,
+  "aria-hidden": ariaHidden = true,
+}: IconProps) {
   return (
     <svg
       width={size}
       height={size * 1.6}
       viewBox="0 0 10 16"
       fill="none"
-      aria-hidden="true"
-      style={{ flexShrink: 0 }}
+      aria-hidden={ariaHidden}
+      style={{ flexShrink: 0, ...style }}
     >
       <path d="M6.2 0L0 9.1h3.4L2.9 16 10 6.4H6.3L6.2 0z" fill={color} />
     </svg>
   );
 }
 
-function Star({ size = 14, color = C.red }: { size?: number; color?: string }) {
+function Star({
+  size = 14,
+  color = C.red,
+  style,
+  "aria-hidden": ariaHidden = true,
+}: IconProps) {
   return (
     <svg
       width={size}
       height={size}
       viewBox="0 0 16 16"
       fill="none"
-      aria-hidden="true"
-      style={{ flexShrink: 0 }}
+      aria-hidden={ariaHidden}
+      style={{ flexShrink: 0, ...style }}
     >
       <path
         d="M8 0l2.1 5.3L16 5.9l-4.3 3.8 1.3 5.8L8 12.4 3 15.5l1.3-5.8L0 5.9l5.9-.6L8 0z"
@@ -1810,26 +1827,44 @@ export default function Page() {
                 >
                   100% of net proceeds from sponsorships are distributed equally
                 </div>
-                <div
-                  style={{
-                    marginTop: 12,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    gap: 22,
-                    flexWrap: "wrap",
-                    fontFamily: display,
-                    fontSize: 26,
-                    textTransform: "uppercase",
-                    color: C.cream,
-                  }}
-                >
-                  <Bolt size={11} aria-hidden="true" />
-<span>50% Boys &amp; Girls Clubs of Broward County</span>
-<Bolt size={11} aria-hidden="true" />
-<span>50% JAFCO</span>
-                </div>
-              </div>
+              <div
+  style={{
+    marginTop: 12,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 22,
+    flexWrap: "wrap",
+    fontFamily: display,
+    fontSize: 26,
+    textTransform: "uppercase",
+    color: C.cream,
+  }}
+>
+  <span
+    style={{
+      display: "inline-flex",
+      alignItems: "center",
+      gap: 8,
+      maxWidth: "100%",
+    }}
+  >
+    <Bolt size={11} aria-hidden="true" style={{ flexShrink: 0 }} />
+    <span>50% Boys &amp; Girls Club of Broward County</span>
+  </span>
+  <span
+    style={{
+      display: "inline-flex",
+      alignItems: "center",
+      gap: 8,
+      whiteSpace: "nowrap",
+    }}
+  >
+    <Bolt size={11} aria-hidden="true" style={{ flexShrink: 0 }} />
+    <span>50% JAFCO</span>
+  </span>
+</div>
+</div>
 
               <div style={{ marginTop: 56 }}>
                 <SponsorForm />
