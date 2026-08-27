@@ -1900,6 +1900,7 @@ export default function Page() {
                 eighties and nineties: real guitars, loud drums, audience interaction.
                 We write our own songs and we play them
                 loud. We also cover your favorite songs spanning decades of rock and pop.
+                Static Rebellion are also the producers of Miami Dolphins Mascot Theme song.
               </p>
               <p
                 style={{
