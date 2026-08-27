@@ -1912,7 +1912,15 @@ export default function Page() {
                 Our originals are streaming now. Come hear them the way they are
                 supposed to sound, in a room with other people.
               </p>
-              <div style={{ display: "flex", gap: 24, marginTop: 26 }}>
+              <div
+  style={{
+    display: "flex",
+    gap: 18,
+    marginTop: 26,
+    flexWrap: "wrap",
+    alignItems: "center",
+  }}
+>
                 <a
                   href="https://instagram.com/staticrebellion"
                   target="_blank"
@@ -1948,6 +1956,28 @@ export default function Page() {
                 >
                   TikTok
                 </a>
+<a
+  href="https://www.nbcmiami.com/video/entertainment/south-florida-live/static-rebellion-rocks-the-studio/3842388/"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="btn-ghost"
+  style={{
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 8,
+    border: `1px solid ${C.red}`,
+    color: C.cream,
+    padding: "9px 16px",
+    fontSize: 11,
+    fontWeight: 700,
+    letterSpacing: "0.14em",
+    textTransform: "uppercase",
+    lineHeight: 1.2,
+  }}
+>
+  <Bolt size={9} />
+  Featured on NBC6 South Florida Live
+</a>
               </div>
             </div>
 
