@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
-const RECIPIENTS = ["nadavminkowitz@gmail.com", "danielmink@gmail.com"];
+const RECIPIENTS = ["nadavminkowitz@gmail.com", "danielmink@gmail.com", "booking@staticrebellion.com"];
 
 /* Must stay under Vercel's 4.5MB request body limit. Base64 adds
    about a third, so this caps the raw file near 3MB. */
