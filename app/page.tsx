@@ -493,6 +493,23 @@ export default function Page() {
               flexShrink: 0,
             }}
           >
+            <Link
+  href="/sponsor"
+  className="btn-ghost desktop-only"
+  style={{
+    border: `1px solid ${C.cream}`,
+    color: C.cream,
+    padding: "12px 20px",
+    fontSize: 12,
+    fontWeight: 700,
+    letterSpacing: "0.16em",
+    textTransform: "uppercase",
+    whiteSpace: "nowrap",
+    marginRight: 8,
+  }}
+>
+  Become a Sponsor
+</Link>
             <a
               href={TICKETS}
               target="_blank"
@@ -539,7 +556,7 @@ export default function Page() {
               {label}
             </a>
           ))}
-
+          <Link href="/sponsor" onClick={() => setMenuOpen(false)}>Become a Sponsor</Link>
           <a
             href={TICKETS}
             target="_blank"
