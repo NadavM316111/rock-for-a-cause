@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -12,9 +12,12 @@ import Link from "next/link";
 const TICKETS =
   "https://www.eventbrite.com/e/static-rebellion-rock-for-a-cause-in-partnership-with-school-of-rock-tickets-1997094540531?aff=oddtdtcreator";
 
-const ARTWORK_EMAIL = "artwork@rockforacause.live";
 const SPONSOR_EMAIL = "sponsors@rockforacause.live";
 const CHECK_ADDRESS = "10731 Hawks Vista Street, Plantation, FL 33324";
+
+/* Max upload. Keep this under Vercel's 4.5MB request body limit,
+   remembering base64 inflates a file by about a third. */
+const MAX_LOGO_BYTES = 3 * 1024 * 1024;
 
 const IMG = {
   sr: "/logo-sr.jpg",
@@ -271,6 +274,16 @@ export default function SponsorPage() {
   );
   const [error, setError] = useState("");
 
+  /* logo upload */
+  const fileRef = useRef<HTMLInputElement | null>(null);
+  const [logo, setLogo] = useState<{
+    filename: string;
+    type: string;
+    size: number;
+    data: string;
+  } | null>(null);
+  const [logoError, setLogoError] = useState("");
+
   const [form, setForm] = useState({
     company: "",
     signageName: "",
@@ -290,6 +303,39 @@ export default function SponsorPage() {
   const set = (key: string, value: string) =>
     setForm((f) => ({ ...f, [key]: value }));
 
+  const pickLogo = async (file: File | undefined) => {
+    if (!file) return;
+    setLogoError("");
+
+    if (file.size > MAX_LOGO_BYTES) {
+      setLogoError(
+        `That file is ${(file.size / 1024 / 1024).toFixed(
+          1
+        )}MB. Keep it under 3MB, or send a smaller export and we will ask for the print-ready version when we confirm your level.`
+      );
+      return;
+    }
+
+    try {
+      const data: string = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () =>
+          resolve(String(reader.result).split(",")[1] || "");
+        reader.onerror = () => reject(new Error("read failed"));
+        reader.readAsDataURL(file);
+      });
+
+      setLogo({
+        filename: file.name,
+        type: file.type || "application/octet-stream",
+        size: file.size,
+        data,
+      });
+    } catch {
+      setLogoError("Could not read that file. Try another one.");
+    }
+  };
+
   const submit = async () => {
     const missing: string[] = [];
     if (!level) missing.push("a sponsorship level");
@@ -297,7 +343,12 @@ export default function SponsorPage() {
     if (!form.contactName.trim()) missing.push("contact name");
     if (!form.email.trim()) missing.push("email");
     if (!form.phone.trim()) missing.push("phone");
-    if (!form.street.trim() || !form.city.trim() || !form.state.trim() || !form.zip.trim())
+    if (
+      !form.street.trim() ||
+      !form.city.trim() ||
+      !form.state.trim() ||
+      !form.zip.trim()
+    )
       missing.push("full address");
     if (!pay) missing.push("how you plan to pay");
     if (!authorized) missing.push("the authorization checkbox");
@@ -322,6 +373,7 @@ export default function SponsorPage() {
           payment: pay,
           date: today,
           authorized,
+          logo,
         }),
       });
       if (!res.ok) throw new Error("Request failed");
@@ -329,7 +381,9 @@ export default function SponsorPage() {
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch {
       setStatus("error");
-      setError("Something went wrong sending that. Please try again in a moment.");
+      setError(
+        "Something went wrong sending that. Please try again in a moment."
+      );
     }
   };
 
@@ -557,10 +611,10 @@ export default function SponsorPage() {
                   color: C.muted,
                 }}
               >
-                We will confirm your level within two business days. Next step on
-                your end: email your logo to {ARTWORK_EMAIL} with your company
-                name in the subject line. Vector files or a transparent PNG at
-                2000px or wider reproduce best on banners.
+                We will confirm your level within two business days.
+                {logo
+                  ? ` Your logo file, ${logo.filename}, came through with the form.`
+                  : " We did not get a logo with this form. Reply to our confirmation email with your artwork and we will take it from there."}
               </p>
               <p
                 style={{
@@ -731,7 +785,9 @@ export default function SponsorPage() {
                           marginTop: 22,
                           textAlign: "center",
                           padding: "12px 14px",
-                          border: `1px solid ${active ? "transparent" : `${t.palette.edge}66`}`,
+                          border: `1px solid ${
+                            active ? "transparent" : `${t.palette.edge}66`
+                          }`,
                           background: active ? C.red : "transparent",
                           fontFamily: display,
                           fontSize: 16,
@@ -747,13 +803,7 @@ export default function SponsorPage() {
                 })}
               </div>
 
-              <div
-                style={{
-                  marginTop: 20,
-                  fontSize: 14,
-                  color: C.muted,
-                }}
-              >
+              <div style={{ marginTop: 20, fontSize: 14, color: C.muted }}>
                 Want to give a different amount or donate goods and services?
                 Write to {SPONSOR_EMAIL} and we will build something that works.
               </div>
@@ -870,51 +920,166 @@ export default function SponsorPage() {
 
               <div
                 style={{
-                  border: `1px solid ${C.line}`,
-                  borderLeft: `3px solid ${C.red}`,
-                  padding: "28px 26px",
-                  marginBottom: 26,
+                  border: `1px dashed ${logo ? C.red : C.line}`,
+                  padding: "34px 28px",
+                  textAlign: "center",
+                  background: C.ink2,
                 }}
               >
-                <div
-                  style={{
-                    fontFamily: display,
-                    fontSize: "clamp(20px, 3vw, 28px)",
-                    textTransform: "uppercase",
-                    color: C.cream,
-                    lineHeight: 1.15,
-                  }}
-                >
-                  Email your logo to {ARTWORK_EMAIL}
-                </div>
-                <ul style={{ listStyle: "none", marginTop: 18 }}>
-                  {[
-                    "Vector files (.ai, .eps, .svg) or a transparent PNG at 2000px or wider reproduce best on banners.",
-                    "Put your company name in the subject line.",
-                    "Send artwork early. Late files may miss the print deadline for signage.",
-                  ].map((line) => (
-                    <li
-                      key={line}
+                <input
+                  ref={fileRef}
+                  id="sp-logo"
+                  type="file"
+                  accept=".png,.jpg,.jpeg,.svg,.pdf,.ai,.eps,.zip,image/*"
+                  style={{ display: "none" }}
+                  onChange={(e) => pickLogo(e.target.files?.[0])}
+                />
+
+                {logo ? (
+                  <div>
+                    <div
                       style={{
-                        display: "flex",
-                        gap: 12,
-                        alignItems: "flex-start",
-                        padding: "7px 0",
-                        fontSize: 15,
-                        lineHeight: 1.6,
-                        color: C.muted,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 10,
+                        fontFamily: display,
+                        fontSize: "clamp(19px, 3vw, 26px)",
+                        textTransform: "uppercase",
+                        color: C.cream,
+                        lineHeight: 1.2,
+                        wordBreak: "break-all",
                       }}
                     >
-                      <span style={{ marginTop: 3 }}>
-                        <Bolt size={8} />
-                      </span>
-                      {line}
-                    </li>
-                  ))}
-                </ul>
+                      <Bolt size={12} />
+                      {logo.filename}
+                    </div>
+                    <div style={{ marginTop: 8, fontSize: 13, color: C.muted }}>
+                      {(logo.size / 1024).toFixed(0)} KB, attached to your
+                      submission
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: 14,
+                        justifyContent: "center",
+                        marginTop: 20,
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <button
+                        onClick={() => fileRef.current?.click()}
+                        className="btn-ghost"
+                        style={{
+                          border: `1px solid ${C.cream}`,
+                          background: "transparent",
+                          color: C.cream,
+                          padding: "12px 26px",
+                          fontFamily: display,
+                          fontSize: 15,
+                          letterSpacing: "0.09em",
+                          textTransform: "uppercase",
+                          cursor: "pointer",
+                        }}
+                      >
+                        Replace File
+                      </button>
+                      <button
+                        onClick={() => {
+                          setLogo(null);
+                          if (fileRef.current) fileRef.current.value = "";
+                        }}
+                        style={{
+                          border: `1px solid ${C.line}`,
+                          background: "transparent",
+                          color: C.muted,
+                          padding: "12px 26px",
+                          fontFamily: display,
+                          fontSize: 15,
+                          letterSpacing: "0.09em",
+                          textTransform: "uppercase",
+                          cursor: "pointer",
+                        }}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <div
+                      style={{
+                        fontFamily: display,
+                        fontSize: "clamp(22px, 3.4vw, 32px)",
+                        textTransform: "uppercase",
+                        color: C.cream,
+                        lineHeight: 1.15,
+                      }}
+                    >
+                      Upload your logo
+                    </div>
+                    <p
+                      style={{
+                        marginTop: 12,
+                        fontSize: 15,
+                        lineHeight: 1.65,
+                        color: C.muted,
+                        maxWidth: 480,
+                        margin: "12px auto 0",
+                      }}
+                    >
+                      Vector files (.ai, .eps, .svg) or a transparent PNG at
+                      2000px or wider reproduce best on banners. Up to 3MB.
+                    </p>
+                    <button
+                      onClick={() => fileRef.current?.click()}
+                      className="btn-red"
+                      style={{
+                        marginTop: 22,
+                        background: C.red,
+                        color: C.cream,
+                        border: "none",
+                        padding: "15px 38px",
+                        fontFamily: display,
+                        fontSize: 17,
+                        letterSpacing: "0.09em",
+                        textTransform: "uppercase",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Choose File
+                    </button>
+                  </div>
+                )}
+
+                {logoError ? (
+                  <p
+                    style={{
+                      marginTop: 18,
+                      fontSize: 14,
+                      color: C.redHi,
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    {logoError}
+                  </p>
+                ) : null}
               </div>
 
-              <div>
+              <p
+                style={{
+                  marginTop: 16,
+                  fontSize: 14,
+                  lineHeight: 1.7,
+                  color: C.muted,
+                }}
+              >
+                Send artwork early. Late files may miss the print deadline for
+                signage. If your file is too large to upload here, submit the
+                form anyway and reply to our confirmation email with the artwork
+                attached.
+              </p>
+
+              <div style={{ marginTop: 30 }}>
                 <label style={labelStyle} htmlFor="sp-announcer">
                   Anything the announcer should know? Pronunciation, tagline,
                   booth needs
@@ -958,7 +1123,7 @@ export default function SponsorPage() {
                     id: "Credit card by phone",
                     title: "Credit card",
                     blurb:
-                      "We call you and take the card over the phone. Never send card numbers by email or through this form.",
+                      "We call you and take the card over the phone. Details appear once you pick this.",
                   },
                 ].map((opt) => {
                   const active = pay === opt.id;
@@ -1034,9 +1199,7 @@ export default function SponsorPage() {
                   >
                     Paying by check
                   </div>
-                  <p
-                    style={{ fontSize: 16, lineHeight: 1.7, color: C.muted }}
-                  >
+                  <p style={{ fontSize: 16, lineHeight: 1.7, color: C.muted }}>
                     Write two separate checks, each for half your sponsorship.
                     One payable to Boys &amp; Girls Club of Broward County, one
                     payable to JAFCO. Mail both to:
@@ -1089,9 +1252,19 @@ export default function SponsorPage() {
                     Paying by card
                   </div>
                   <p style={{ fontSize: 16, lineHeight: 1.7, color: C.muted }}>
-                    Submit this form and we will call the number you gave to take
-                    the card details by phone, then split the donation 50/50. Do
-                    not type card numbers into this form or send them by email.
+                    Submit this form and we will call the number you gave to
+                    arrange the card payment, then split the donation 50/50.
+                  </p>
+                  <p
+                    style={{
+                      marginTop: 14,
+                      fontSize: 15,
+                      lineHeight: 1.7,
+                      color: C.muted,
+                    }}
+                  >
+                    For your own protection, never type a card number into this
+                    form or send one by email. We will never ask you to.
                   </p>
                 </div>
               ) : null}

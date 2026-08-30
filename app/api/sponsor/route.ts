@@ -4,8 +4,18 @@ export const runtime = "nodejs";
 
 const RECIPIENTS = ["nadavminkowitz@gmail.com", "danielmink@gmail.com"];
 
+/* Must stay under Vercel's 4.5MB request body limit. Base64 adds
+   about a third, so this caps the raw file near 3MB. */
+const MAX_ATTACHMENT_BASE64 = 4 * 1024 * 1024;
+
 const clean = (v: unknown, fallback = "Not provided") =>
   String(v ?? "").trim() || fallback;
+
+/* Strip path separators and anything weird out of the filename */
+const safeFilename = (name: string) => {
+  const base = name.split(/[\\/]/).pop() || "logo";
+  return base.replace(/[^\w.\- ]+/g, "_").slice(0, 120);
+};
 
 export async function POST(req: Request) {
   try {
@@ -34,6 +44,21 @@ export async function POST(req: Request) {
     const date = clean(body.date, new Date().toLocaleDateString("en-US"));
     const authorized = body.authorized ? "Yes" : "No";
 
+    /* ---- logo attachment ---- */
+    const attachments: { filename: string; content: string }[] = [];
+    let logoNote = "No logo uploaded with this form";
+
+    const logo = body.logo;
+    if (logo && typeof logo.data === "string" && logo.data.length) {
+      if (logo.data.length > MAX_ATTACHMENT_BASE64) {
+        logoNote = `Logo was too large to attach (${logo.filename || "unnamed"})`;
+      } else {
+        const filename = safeFilename(String(logo.filename || "logo"));
+        attachments.push({ filename, content: logo.data });
+        logoNote = `Attached: ${filename}`;
+      }
+    }
+
     const text = [
       "New sponsorship commitment from rockforacause.live",
       "",
@@ -51,6 +76,9 @@ export async function POST(req: Request) {
       `Title: ${title}`,
       `Email: ${email}`,
       `Phone: ${phone}`,
+      "",
+      "LOGO",
+      logoNote,
       "",
       "ANNOUNCER NOTES",
       announcer,
@@ -70,21 +98,24 @@ export async function POST(req: Request) {
       );
     }
 
+    const payload: Record<string, unknown> = {
+      from:
+        process.env.SPONSOR_FROM || "Rock for a Cause <onboarding@resend.dev>",
+      to: RECIPIENTS,
+      reply_to: email,
+      subject: `Sponsorship commitment: ${company} (${tier})`,
+      text,
+    };
+
+    if (attachments.length) payload.attachments = attachments;
+
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        from:
-          process.env.SPONSOR_FROM ||
-          "Rock for a Cause <onboarding@resend.dev>",
-        to: RECIPIENTS,
-        reply_to: email,
-        subject: `Sponsorship commitment: ${company} (${tier})`,
-        text,
-      }),
+      body: JSON.stringify(payload),
     });
 
     if (!res.ok) {
