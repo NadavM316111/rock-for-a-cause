@@ -4,32 +4,61 @@ export const runtime = "nodejs";
 
 const RECIPIENTS = ["nadavminkowitz@gmail.com", "danielmink@gmail.com"];
 
+const clean = (v: unknown, fallback = "Not provided") =>
+  String(v ?? "").trim() || fallback;
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const name = String(body.name || "").trim();
-    const email = String(body.email || "").trim();
 
-    if (!name || !email) {
+    const contactName = clean(body.contactName || body.name, "");
+    const email = clean(body.email, "");
+
+    if (!contactName || !email) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
 
-    const company = String(body.company || "").trim() || "Not provided";
-    const phone = String(body.phone || "").trim() || "Not provided";
-    const tier = String(body.tier || "").trim() || "Not specified";
-    const message = String(body.message || "").trim() || "No message";
+    const company = clean(body.company);
+    const signageName = clean(body.signageName, company);
+    const title = clean(body.title);
+    const phone = clean(body.phone);
+    const website = clean(body.website);
+    const street = clean(body.street);
+    const city = clean(body.city);
+    const state = clean(body.state);
+    const zip = clean(body.zip);
+    const tier = clean(body.tier, "Not specified");
+    const payment = clean(body.payment, "Not specified");
+    const announcer = clean(body.announcer || body.message, "None");
+    const signature = clean(body.signature, contactName);
+    const date = clean(body.date, new Date().toLocaleDateString("en-US"));
+    const authorized = body.authorized ? "Yes" : "No";
 
     const text = [
-      "New sponsorship inquiry from rockforacause.live",
+      "New sponsorship commitment from rockforacause.live",
       "",
-      `Name: ${name}`,
+      `Level: ${tier}`,
+      `Payment method: ${payment}`,
+      "",
+      "SPONSOR",
       `Company: ${company}`,
+      `Name for signage: ${signageName}`,
+      `Website: ${website}`,
+      `Address: ${street}, ${city}, ${state} ${zip}`,
+      "",
+      "CONTACT",
+      `Name: ${contactName}`,
+      `Title: ${title}`,
       `Email: ${email}`,
       `Phone: ${phone}`,
-      `Level: ${tier}`,
       "",
-      "Message:",
-      message,
+      "ANNOUNCER NOTES",
+      announcer,
+      "",
+      "AUTHORIZATION",
+      `Authorized to commit and grants logo permission: ${authorized}`,
+      `Signed: ${signature}`,
+      `Date: ${date}`,
     ].join("\n");
 
     const apiKey = process.env.RESEND_API_KEY;
@@ -53,7 +82,7 @@ export async function POST(req: Request) {
           "Rock for a Cause <onboarding@resend.dev>",
         to: RECIPIENTS,
         reply_to: email,
-        subject: `Sponsorship inquiry: ${company} (${tier})`,
+        subject: `Sponsorship commitment: ${company} (${tier})`,
         text,
       }),
     });

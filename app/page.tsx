@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 const TICKETS =
   "https://www.eventbrite.com/e/static-rebellion-rock-for-a-cause-in-partnership-with-school-of-rock-tickets-1997094540531?aff=oddtdtcreator";
@@ -64,7 +65,7 @@ const C = {
   muted: "#948A80",
 };
 
-/* Metal palette for the sponsor wall and the tier bars */
+/* Metal palette for the sponsor wall */
 const M = {
   silver: { edge: "#B9BEC4", text: "#D8DDE2", glow: "rgba(185,190,196,0.16)" },
   gold: { edge: "#D4AF37", text: "#EBC85B", glow: "rgba(212,175,55,0.16)" },
@@ -366,7 +367,7 @@ const BENEFICIARIES = [
   },
 ];
 
-/* ------------------ SPONSOR WALL + SPONSOR TIERS ------------------ */
+/* ---------------------- SPONSOR WALL ---------------------- */
 
 const SPONSOR_WALL: {
   tier: "Diamond" | "Platinum" | "Gold" | "Silver";
@@ -405,326 +406,11 @@ const SPONSOR_WALL: {
   },
 ];
 
-const SPONSOR_TIERS = [
-  {
-    name: "Silver",
-    price: "$1,000",
-    palette: M.silver,
-    lead: null as string | null,
-    perks: [
-      "Company logo on the event website",
-      "Recognition on social media",
-      "Name listed on sponsor signage at the event",
-      "Two VIP tickets",
-    ],
-  },
-  {
-    name: "Gold",
-    price: "$5,000",
-    palette: M.gold,
-    lead: "Everything in Silver, plus:",
-    perks: [
-      "Medium-sized logo on event marketing materials",
-      "Recognition during the live event",
-      "Logo featured on the event website with a direct link",
-      "Six VIP tickets",
-      "Meet and greet with the band",
-    ],
-  },
-  {
-    name: "Platinum",
-    price: "$10,000",
-    palette: M.platinum,
-    lead: "Everything in Gold, plus:",
-    perks: [
-      "Premium logo placement on event signage",
-      "Recognition from the stage during performances",
-      "Featured social media spotlight before the event",
-      "Opportunity to display promotional materials at the venue",
-      "Ten VIP tickets",
-      "Photo with Static Rebellion",
-    ],
-  },
-  {
-    name: "Diamond",
-    price: "$20,000",
-    palette: M.diamond,
-    lead: "Everything in Platinum, plus:",
-    perks: [
-      "Premier logo placement on all event materials",
-      "Featured recognition as Presenting Sponsor",
-      "On-stage acknowledgment during the event",
-      "A representative from your business addresses the audience live on stage for a few minutes",
-      "Presentation of a plaque by Static Rebellion recognizing your community alliance",
-      "Dedicated sponsor spotlight on the event website",
-      "Premium booth or display space, if desired",
-      "Fifteen VIP tickets",
-      "Private meet and greet with the band",
-      "Complimentary event t-shirts for your guests",
-    ],
-  },
-];
-
-const inputStyle: React.CSSProperties = {
-  width: "100%",
-  background: C.ink,
-  border: `1px solid ${C.line}`,
-  color: C.cream,
-  padding: "14px 15px",
-  fontSize: 15,
-  fontFamily: "inherit",
-  outline: "none",
-  borderRadius: 0,
-  appearance: "none",
-};
-
-const labelStyle: React.CSSProperties = {
-  display: "block",
-  fontSize: 10,
-  fontWeight: 700,
-  letterSpacing: "0.22em",
-  textTransform: "uppercase",
-  color: C.red,
-  marginBottom: 9,
-};
-
-function SponsorForm() {
-  const [form, setForm] = useState({
-    name: "",
-    company: "",
-    email: "",
-    phone: "",
-    tier: "Not sure yet",
-    message: "",
-  });
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
-    "idle"
-  );
-  const [error, setError] = useState("");
-
-  const set = (key: string, value: string) =>
-    setForm((f) => ({ ...f, [key]: value }));
-
-  const submit = async () => {
-    if (!form.name.trim() || !form.email.trim()) {
-      setStatus("error");
-      setError("Please add your name and email so we can reach you.");
-      return;
-    }
-    setStatus("sending");
-    setError("");
-    try {
-      const res = await fetch("/api/sponsor", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      if (!res.ok) throw new Error("Request failed");
-      setStatus("sent");
-    } catch {
-      setStatus("error");
-      setError(
-        "Something went wrong sending that. Please try again in a moment."
-      );
-    }
-  };
-
-  if (status === "sent") {
-    return (
-      <div
-        style={{
-          border: `1px solid ${C.line}`,
-          borderLeft: `3px solid ${C.red}`,
-          padding: "44px 34px",
-        }}
-      >
-        <h3
-          style={{
-            fontFamily: display,
-            fontSize: "clamp(28px, 4vw, 42px)",
-            lineHeight: 1.04,
-            textTransform: "uppercase",
-            color: C.cream,
-          }}
-        >
-          Thank you. We got it.
-        </h3>
-        <p
-          style={{
-            marginTop: 16,
-            fontSize: 17,
-            lineHeight: 1.7,
-            color: C.muted,
-            maxWidth: 520,
-          }}
-        >
-          Someone from the Rock for a Cause team will follow up shortly to walk
-          you through the sponsorship levels and get your logo on the wall.
-        </p>
-      </div>
-    );
-  }
-
-  return (
-    <div
-      style={{
-        border: `1px solid ${C.line}`,
-        padding: "38px 34px",
-        background: C.ink,
-      }}
-    >
-      <Eyebrow>Become a sponsor</Eyebrow>
-      <h3
-        style={{
-          fontFamily: display,
-          fontSize: "clamp(26px, 3.6vw, 40px)",
-          lineHeight: 1.04,
-          textTransform: "uppercase",
-          color: C.cream,
-          marginTop: 16,
-          marginBottom: 10,
-        }}
-      >
-        Tell us about your business
-      </h3>
-      <p
-        style={{
-          fontSize: 16,
-          lineHeight: 1.7,
-          color: C.muted,
-          maxWidth: 560,
-          marginBottom: 30,
-        }}
-      >
-        Fill this out and the Rock for a Cause team will get back to you with
-        everything you need, including logo specs and deadlines.
-      </p>
-
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))",
-          gap: 20,
-        }}
-      >
-        <div>
-          <label style={labelStyle} htmlFor="sp-name">
-            Your Name
-          </label>
-          <input
-            id="sp-name"
-            style={inputStyle}
-            value={form.name}
-            onChange={(e) => set("name", e.target.value)}
-            placeholder="Full name"
-          />
-        </div>
-        <div>
-          <label style={labelStyle} htmlFor="sp-company">
-            Company
-          </label>
-          <input
-            id="sp-company"
-            style={inputStyle}
-            value={form.company}
-            onChange={(e) => set("company", e.target.value)}
-            placeholder="Business name"
-          />
-        </div>
-        <div>
-          <label style={labelStyle} htmlFor="sp-email">
-            Email
-          </label>
-          <input
-            id="sp-email"
-            type="email"
-            style={inputStyle}
-            value={form.email}
-            onChange={(e) => set("email", e.target.value)}
-            placeholder="you@company.com"
-          />
-        </div>
-        <div>
-          <label style={labelStyle} htmlFor="sp-phone">
-            Phone
-          </label>
-          <input
-            id="sp-phone"
-            style={inputStyle}
-            value={form.phone}
-            onChange={(e) => set("phone", e.target.value)}
-            placeholder="Optional"
-          />
-        </div>
-      </div>
-
-      <div style={{ marginTop: 20 }}>
-        <label style={labelStyle} htmlFor="sp-tier">
-          Sponsorship Level
-        </label>
-        <select
-          id="sp-tier"
-          style={inputStyle}
-          value={form.tier}
-          onChange={(e) => set("tier", e.target.value)}
-        >
-          <option>Not sure yet</option>
-          <option>Silver, $1,000</option>
-          <option>Gold, $5,000</option>
-          <option>Platinum, $10,000</option>
-          <option>Diamond, $20,000</option>
-          <option>Custom or in-kind donation</option>
-        </select>
-      </div>
-
-      <div style={{ marginTop: 20 }}>
-        <label style={labelStyle} htmlFor="sp-message">
-          Anything Else
-        </label>
-        <textarea
-          id="sp-message"
-          rows={5}
-          style={{ ...inputStyle, resize: "vertical", lineHeight: 1.6 }}
-          value={form.message}
-          onChange={(e) => set("message", e.target.value)}
-          placeholder="Questions, ideas, or how you would like to be involved"
-        />
-      </div>
-
-      {status === "error" ? (
-        <p style={{ marginTop: 18, fontSize: 14, color: C.redHi }}>{error}</p>
-      ) : null}
-
-      <button
-        onClick={submit}
-        disabled={status === "sending"}
-        className="btn-red"
-        style={{
-          marginTop: 28,
-          background: C.red,
-          color: C.cream,
-          border: "none",
-          padding: "18px 46px",
-          fontFamily: display,
-          fontSize: 19,
-          letterSpacing: "0.09em",
-          textTransform: "uppercase",
-          cursor: status === "sending" ? "default" : "pointer",
-          opacity: status === "sending" ? 0.65 : 1,
-        }}
-      >
-        {status === "sending" ? "Sending..." : "Send It"}
-      </button>
-    </div>
-  );
-}
-
 /* ------------------------------------------------------------------ */
 
 export default function Page() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [showSponsorInfo, setShowSponsorInfo] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -732,15 +418,6 @@ export default function Page() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  const openSponsorInfo = () => {
-    setShowSponsorInfo(true);
-    setTimeout(() => {
-      document
-        .getElementById("sponsor-levels")
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 60);
-  };
 
   return (
     <main style={{ background: C.ink, minHeight: "100vh" }}>
@@ -1610,7 +1287,10 @@ export default function Page() {
                       padding: 14,
                     }}
                   >
-                    <Star size={row.tier === "Silver" ? 12 : 16} color={row.palette.edge} />
+                    <Star
+                      size={row.tier === "Silver" ? 12 : 16}
+                      color={row.palette.edge}
+                    />
                     <div
                       style={{
                         fontFamily: display,
@@ -1640,238 +1320,91 @@ export default function Page() {
             </div>
           ))}
 
-          {!showSponsorInfo ? (
-            <div style={{ marginTop: 52, textAlign: "center" }}>
-              <button
-                onClick={openSponsorInfo}
-                className="btn-red"
-                style={{
-                  display: "inline-block",
-                  width: "100%",
-                  maxWidth: 720,
-                  background: C.red,
-                  color: C.cream,
-                  border: "none",
-                  padding: "30px 40px",
-                  fontFamily: display,
-                  fontSize: "clamp(24px, 4.6vw, 42px)",
-                  lineHeight: 1.05,
-                  letterSpacing: "0.06em",
-                  textTransform: "uppercase",
-                  cursor: "pointer",
-                }}
-              >
-                See How To Sponsor
-              </button>
-            </div>
-          ) : null}
-        </div>
-
-        {/* ---- Revealed: the four levels, then the form ---- */}
-        {showSponsorInfo ? (
           <div
-            id="sponsor-levels"
             style={{
-              marginTop: 76,
-              paddingTop: 76,
-              borderTop: `1px solid ${C.line}`,
-              background: C.ink2,
-              paddingBottom: 90,
+              marginTop: 44,
+              border: `1px solid ${C.red}`,
+              padding: "24px 26px",
+              textAlign: "center",
             }}
           >
-            <div className="wrap">
-              <div style={{ textAlign: "center", marginBottom: 46 }}>
-                <div
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 14,
-                  }}
-                >
-                  <Star size={16} />
-                  <h2
-                    style={{
-                      fontFamily: display,
-                      fontSize: "clamp(34px, 6vw, 62px)",
-                      lineHeight: 0.95,
-                      letterSpacing: "0.02em",
-                      textTransform: "uppercase",
-                      color: C.cream,
-                    }}
-                  >
-                    Sponsorship Levels
-                  </h2>
-                  <Star size={16} />
-                </div>
-              </div>
-
-              <div
+            <div
+              style={{
+                fontSize: 12,
+                fontWeight: 700,
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+                color: C.cream,
+                lineHeight: 1.7,
+              }}
+            >
+              100% of net proceeds from sponsorships are distributed equally
+            </div>
+            <div
+              style={{
+                marginTop: 12,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 22,
+                flexWrap: "wrap",
+                fontFamily: display,
+                fontSize: 26,
+                textTransform: "uppercase",
+                color: C.cream,
+              }}
+            >
+              <span
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-                  gap: 18,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  maxWidth: "100%",
                 }}
               >
-                {SPONSOR_TIERS.map((t) => (
-                  <div
-                    key={t.name}
-                    style={{
-                      border: `1px solid ${t.palette.edge}66`,
-                      background: `linear-gradient(180deg, ${t.palette.glow} 0%, rgba(0,0,0,0) 62%), ${C.ink}`,
-                      padding: "30px 26px 32px",
-                      display: "flex",
-                      flexDirection: "column",
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 10,
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Star size={20} color={t.palette.edge} />
-                      <span
-                        style={{
-                          fontFamily: display,
-                          fontSize: 30,
-                          letterSpacing: "0.04em",
-                          textTransform: "uppercase",
-                          color: t.palette.text,
-                          lineHeight: 1,
-                        }}
-                      >
-                        {t.name}
-                      </span>
-                    </div>
-
-                    <div
-                      style={{
-                        fontFamily: display,
-                        fontSize: 40,
-                        textAlign: "center",
-                        color: C.cream,
-                        marginTop: 8,
-                        lineHeight: 1,
-                      }}
-                    >
-                      {t.price}
-                    </div>
-
-                    <div
-                      style={{
-                        height: 1,
-                        background: `${t.palette.edge}44`,
-                        margin: "22px 0 18px",
-                      }}
-                    />
-
-                    {t.lead ? (
-                      <div
-                        style={{
-                          fontSize: 11,
-                          fontWeight: 700,
-                          letterSpacing: "0.14em",
-                          textTransform: "uppercase",
-                          color: t.palette.text,
-                          marginBottom: 14,
-                        }}
-                      >
-                        {t.lead}
-                      </div>
-                    ) : null}
-
-                    <ul style={{ listStyle: "none", flexGrow: 1 }}>
-                      {t.perks.map((perk) => (
-                        <li
-                          key={perk}
-                          style={{
-                            display: "flex",
-                            gap: 10,
-                            alignItems: "flex-start",
-                            padding: "7px 0",
-                            fontSize: 14.5,
-                            lineHeight: 1.5,
-                            color: C.muted,
-                          }}
-                        >
-                          <span style={{ marginTop: 3 }}>
-                            <Star size={10} color={t.palette.edge} />
-                          </span>
-                          {perk}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-
-              <div
+                <Bolt size={11} />
+                <span>50% Boys &amp; Girls Club of Broward County</span>
+              </span>
+              <span
                 style={{
-                  marginTop: 34,
-                  border: `1px solid ${C.red}`,
-                  padding: "24px 26px",
-                  textAlign: "center",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  whiteSpace: "nowrap",
                 }}
               >
-                <div
-                  style={{
-                    fontSize: 12,
-                    fontWeight: 700,
-                    letterSpacing: "0.2em",
-                    textTransform: "uppercase",
-                    color: C.cream,
-                    lineHeight: 1.7,
-                  }}
-                >
-                  100% of net proceeds from sponsorships are distributed equally
-                </div>
-              <div
-  style={{
-    marginTop: 12,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 22,
-    flexWrap: "wrap",
-    fontFamily: display,
-    fontSize: 26,
-    textTransform: "uppercase",
-    color: C.cream,
-  }}
->
-  <span
-    style={{
-      display: "inline-flex",
-      alignItems: "center",
-      gap: 8,
-      maxWidth: "100%",
-    }}
-  >
-    <Bolt size={11} aria-hidden="true" style={{ flexShrink: 0 }} />
-    <span>50% Boys &amp; Girls Club of Broward County</span>
-  </span>
-  <span
-    style={{
-      display: "inline-flex",
-      alignItems: "center",
-      gap: 8,
-      whiteSpace: "nowrap",
-    }}
-  >
-    <Bolt size={11} aria-hidden="true" style={{ flexShrink: 0 }} />
-    <span>50% JAFCO</span>
-  </span>
-</div>
-</div>
-
-              <div style={{ marginTop: 56 }}>
-                <SponsorForm />
-              </div>
+                <Bolt size={11} />
+                <span>50% JAFCO</span>
+              </span>
             </div>
           </div>
-        ) : null}
+
+          <div style={{ marginTop: 44, textAlign: "center" }}>
+            <Link
+              href="/sponsor"
+              className="btn-red"
+              style={{
+                display: "inline-block",
+                width: "100%",
+                maxWidth: 720,
+                background: C.red,
+                color: C.cream,
+                border: "none",
+                padding: "30px 40px",
+                fontFamily: display,
+                fontSize: "clamp(24px, 4.6vw, 42px)",
+                lineHeight: 1.05,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+              }}
+            >
+              See How To Sponsor
+            </Link>
+            <p style={{ marginTop: 16, fontSize: 14, color: C.muted }}>
+              Four levels, every perk, and the commitment form, all on one page.
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* ---------------- THE BAND ---------------- */}
@@ -1901,7 +1434,7 @@ export default function Page() {
                 We write our own songs and we play them
                 loud. We also cover your favorite songs spanning decades of rock and pop.
               </p>
-                <p
+              <p
                 style={{
                   marginTop: 18,
                   fontSize: 17,
@@ -1923,14 +1456,14 @@ export default function Page() {
                 supposed to sound, in a room with other people.
               </p>
               <div
-  style={{
-    display: "flex",
-    gap: 18,
-    marginTop: 26,
-    flexWrap: "wrap",
-    alignItems: "center",
-  }}
->
+                style={{
+                  display: "flex",
+                  gap: 18,
+                  marginTop: 26,
+                  flexWrap: "wrap",
+                  alignItems: "center",
+                }}
+              >
                 <a
                   href="https://instagram.com/staticrebellion"
                   target="_blank"
@@ -1966,28 +1499,29 @@ export default function Page() {
                 >
                   TikTok
                 </a>
-<a
-  href="https://www.nbcmiami.com/video/entertainment/south-florida-live/static-rebellion-rocks-the-studio/3842388/"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="btn-ghost"
-  style={{
-    display: "inline-flex",
-    alignItems: "center",
-    gap: 8,
-    border: `1px solid ${C.red}`,
-    color: C.cream,
-    padding: "9px 16px",
-    fontSize: 11,
-    fontWeight: 700,
-    letterSpacing: "0.14em",
-    textTransform: "uppercase",
-    lineHeight: 1.2,
-  }}
->
-  <Bolt size={9} />
-  Featured on NBC6 South Florida Live
-</a>
+
+                <a
+                  href="https://www.nbcmiami.com/video/entertainment/south-florida-live/static-rebellion-rocks-the-studio/3842388/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-ghost"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 8,
+                    border: `1px solid ${C.red}`,
+                    color: C.cream,
+                    padding: "9px 16px",
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                    lineHeight: 1.2,
+                  }}
+                >
+                  <Bolt size={9} />
+                  Featured on NBC6 South Florida Live
+                </a>
               </div>
             </div>
 
@@ -2226,7 +1760,7 @@ export default function Page() {
               },
               {
                 q: "Can my business get involved?",
-                a: "Yes. Head to the Sponsors section and tap See How To Sponsor for every level and what comes with it.",
+                a: "Yes. Tap See How To Sponsor in the Sponsors section for every level and the commitment form.",
               },
             ].map((item, i, arr) => (
               <div
@@ -2354,15 +1888,33 @@ export default function Page() {
                   flexWrap: "wrap",
                 }}
               >
-                <a href="https://bgcbc.org" target="_blank" rel="noopener noreferrer" className="social-link" style={{ fontSize: 14, color: C.muted }}>
+                <a
+                  href="https://bgcbc.org"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="social-link"
+                  style={{ fontSize: 14, color: C.muted }}
+                >
                   bgcbc.org
                 </a>
 
-                <a href="https://jafco.org" target="_blank" rel="noopener noreferrer" className="social-link" style={{ fontSize: 14, color: C.muted }}>
+                <a
+                  href="https://jafco.org"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="social-link"
+                  style={{ fontSize: 14, color: C.muted }}
+                >
                   jafco.org
                 </a>
 
-                <a href={SOR_SITE} target="_blank" rel="noopener noreferrer" className="social-link" style={{ fontSize: 14, color: C.muted }}>
+                <a
+                  href={SOR_SITE}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="social-link"
+                  style={{ fontSize: 14, color: C.muted }}
+                >
                   schoolofrock.com/locations/miami
                 </a>
               </div>
@@ -2386,7 +1938,13 @@ export default function Page() {
                 <div>2:00 PM to 6:00 PM</div>
                 <div>Doors at 1:30 PM</div>
                 <div>Metered and paid valet parking</div>
-                <a href={MAPS} target="_blank" rel="noopener noreferrer" className="social-link" style={{ color: C.cream, borderBottom: `1px solid ${C.line}` }}>
+                <a
+                  href={MAPS}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="social-link"
+                  style={{ color: C.cream, borderBottom: `1px solid ${C.line}` }}
+                >
                   471 NW 3rd St, Miami, FL
                 </a>
               </div>
@@ -2413,27 +1971,54 @@ export default function Page() {
                   fontSize: 15,
                 }}
               >
-                <a href="https://instagram.com/staticrebellion" target="_blank" rel="noopener noreferrer" className="social-link" style={{ color: C.muted }}>
+                <a
+                  href="https://instagram.com/staticrebellion"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="social-link"
+                  style={{ color: C.muted }}
+                >
                   Instagram @staticrebellion
                 </a>
 
-                <a href="https://tiktok.com/@static.rebellion" target="_blank" rel="noopener noreferrer" className="social-link" style={{ color: C.muted }}>
+                <a
+                  href="https://tiktok.com/@static.rebellion"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="social-link"
+                  style={{ color: C.muted }}
+                >
                   TikTok @static.rebellion
                 </a>
 
                 {SOR_SOCIALS.map((s) => (
-                  <a key={s.href} href={s.href} target="_blank" rel="noopener noreferrer" className="social-link" style={{ color: C.muted }}>
+                  <a
+                    key={s.href}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-link"
+                    style={{ color: C.muted }}
+                  >
                     Instagram {s.label}
                   </a>
                 ))}
 
-                <a href="mailto:booking@staticrebellion.com" className="social-link" style={{ color: C.muted }}>
+                <a
+                  href="mailto:booking@staticrebellion.com"
+                  className="social-link"
+                  style={{ color: C.muted }}
+                >
                   booking@staticrebellion.com
                 </a>
 
-                <a href="#sponsors" className="social-link" style={{ color: C.muted }}>
+                <Link
+                  href="/sponsor"
+                  className="social-link"
+                  style={{ color: C.muted }}
+                >
                   Sponsor the show
-                </a>
+                </Link>
               </div>
             </div>
           </div>
