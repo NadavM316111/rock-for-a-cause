@@ -1445,11 +1445,11 @@ export default function Page() {
                 borderTop: `1px solid ${C.line}`,
               }}
             >
-              <p style={{ fontSize: 17, lineHeight: 1.72, color: C.muted }}>
-                South Florida alternative rock band inspired by artists from the
-                eighties and nineties: real guitars, loud drums, audience interaction.
-                We write our own songs and we play them
-                loud. We also cover your favorite songs spanning decades of rock and pop.
+                            <p style={{ fontSize: 17, lineHeight: 1.72, color: C.muted }}>
+                Static Rebellion is a South Florida alternative rock band
+                founded in May 2025 by brothers Redd, 17 (drums and producer)
+                and Nadav, 15 (lead vocals and guitar). Laz joined the band on
+                bass in April 2026, completing the trio.
               </p>
               <p
                 style={{
@@ -1459,7 +1459,10 @@ export default function Page() {
                   color: C.muted,
                 }}
               >
-                Static Rebellion produced the Miami Dolphins Mascot Theme song.
+                Inspired by the raw energy of alternative rock, punk and grunge
+                from the &rsquo;80s and &rsquo;90s, Static Rebellion brings that
+                spirit to a new generation: real guitars, loud drums, original
+                songs and a live show built around the audience.
               </p>
               <p
                 style={{
@@ -1469,8 +1472,36 @@ export default function Page() {
                   color: C.muted,
                 }}
               >
-                Our originals are streaming now. Come hear them the way they are
-                supposed to sound, in a room with other people.
+                The band writes, records and produces its own music and performs
+                regularly throughout South Florida&rsquo;s tri-county area. Their
+                sets combine original material with their own take on
+                fan-favorite rock and pop songs spanning multiple decades.
+              </p>
+              <p
+                style={{
+                  marginTop: 18,
+                  fontSize: 17,
+                  lineHeight: 1.72,
+                  color: C.muted,
+                }}
+              >
+                In 2026, Static Rebellion released its first two original
+                singles, with a third currently in production. The band also
+                produced the official Miami Dolphins Mascot Theme Song, bringing
+                their sound from South Florida stages to one of the
+                region&rsquo;s most recognizable sports franchises.
+              </p>
+              <p
+                style={{
+                  marginTop: 18,
+                  fontSize: 17,
+                  lineHeight: 1.72,
+                  color: C.muted,
+                }}
+              >
+                Static Rebellion&rsquo;s originals are streaming now, but this is
+                music meant to be experienced live. Come hear it the way rock is
+                supposed to sound: loud, live, and in a room full of people.
               </p>
               <div
                 style={{
