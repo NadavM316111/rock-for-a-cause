@@ -341,6 +341,19 @@ const FACTS = [
   { label: "Venue", value: "471 NW 3rd St", sub: "Miami, Florida" },
   { label: "Ages", value: "All Ages", sub: "Everyone welcome" },
 ];
+const PROGRAM = [
+  { time: "1:30 PM", what: "Doors open, guest check-in, silent auction opens, food trucks, VIP and sponsor reception" },
+  { time: "2:00 PM", what: "Opening and welcome from the MC" },
+  { time: "2:10 PM", what: "School of Rock, opening band" },
+  { time: "2:50 PM", what: "JAFCO speaker" },
+  { time: "2:55 PM", what: "School of Rock, second band" },
+  { time: "3:35 PM", what: "Boys and Girls Club of Broward County speaker" },
+  { time: "3:40 PM", what: "Sponsor and charity recognition, Diamond plaque presentation" },
+  { time: "3:50 PM", what: "Static Rebellion, headlining set one" },
+  { time: "4:50 PM", what: "Intermission, food and photos" },
+  { time: "5:00 PM", what: "Static Rebellion, headlining set two" },
+  { time: "5:50 PM", what: "Closing remarks and silent auction winners" },
+];
 
 const BENEFICIARIES = [
   {
@@ -1762,6 +1775,69 @@ export default function Page() {
               Get Directions
             </a>
           </div>
+        </div>
+      </section>
+            {/* ---------------- PROGRAM ---------------- */}
+      <section
+        id="program"
+        style={{ padding: "84px 0", borderTop: `1px solid ${C.line}` }}
+      >
+        <div className="wrap">
+          <SectionTitle
+            kicker="Scottish Rite Temple, Miami"
+            title={
+              <>
+                Run of
+                <br />
+                <span style={{ color: C.red }}>the day</span>
+              </>
+            }
+          />
+
+          <div style={{ border: `1px solid ${C.line}` }}>
+            {PROGRAM.map((p, i, arr) => (
+              <div
+                key={p.time}
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: 20,
+                  padding: "20px 24px",
+                  borderBottom:
+                    i < arr.length - 1 ? `1px solid ${C.line}` : "none",
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: display,
+                    fontSize: "clamp(18px, 2.4vw, 24px)",
+                    textTransform: "uppercase",
+                    color: C.cream,
+                    lineHeight: 1.1,
+                    minWidth: 104,
+                    flexShrink: 0,
+                    fontVariantNumeric: "tabular-nums",
+                  }}
+                >
+                  {p.time}
+                </div>
+                <div
+                  style={{
+                    fontSize: 16,
+                    lineHeight: 1.6,
+                    color: C.muted,
+                    paddingTop: 2,
+                  }}
+                >
+                  {p.what}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <p style={{ marginTop: 18, fontSize: 14, color: C.muted }}>
+            Times are approximate and may shift on the day.
+          </p>
         </div>
       </section>
 
