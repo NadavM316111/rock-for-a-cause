@@ -1625,8 +1625,7 @@ export default function Page() {
                 }}
               >
                 Student performers from School of Rock Miami are sharing the
-                stage with us all afternoon. Some of them are playing their first
-                real show. That alone is worth the ticket.
+                stage with us all afternoon. That alone is worth the ticket.
               </p>
 
               <a
