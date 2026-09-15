@@ -32,7 +32,7 @@ const SONGS = [
 const MAPS =
   "https://www.google.com/maps/search/?api=1&query=471+NW+3rd+St+Miami+FL";
 
-const SOR_SITE = "https://www.schoolofrock.com/locations/miami";
+const SOR_SITE = "https://www.schoolofrock.com/locations/coconutgrove";
 
 const SOR_SOCIALS = [
   { label: "@schoolofrockmiami", href: "https://instagram.com/schoolofrockmiami" },
@@ -1628,25 +1628,25 @@ export default function Page() {
                 stage with us all afternoon. That alone is worth the ticket.
               </p>
 
-              <a
-                href={SOR_SITE}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-link"
-                style={{
-                  display: "inline-block",
-                  marginTop: 20,
-                  fontSize: 12,
-                  fontWeight: 700,
-                  letterSpacing: "0.16em",
-                  textTransform: "uppercase",
-                  color: C.cream,
-                  borderBottom: `1px solid ${C.red}`,
-                  paddingBottom: 3,
-                }}
-              >
-                schoolofrock.com/locations/miami
-              </a>
+  <a            
+  href={SOR_SITE}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="social-link"
+  style={{
+    display: "inline-block",
+    marginTop: 20,
+    fontSize: 12,
+    fontWeight: 700,
+    letterSpacing: "0.16em",
+    textTransform: "uppercase",
+    color: C.cream,
+    borderBottom: `1px solid ${C.red}`,
+    paddingBottom: 3,
+  }}
+>
+  schoolofrock.com/locations/coconutgrove
+</a>
 
               <div
                 style={{
