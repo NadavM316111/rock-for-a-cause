@@ -382,41 +382,51 @@ const BENEFICIARIES = [
 ];
 
 /* ---------------------- SPONSOR WALL ---------------------- */
+/* ---------------------- SPONSOR WALL ---------------------- */
 
 const SPONSOR_WALL: {
-  tier: "Diamond" | "Platinum" | "Gold" | "Silver";
-  count: number;
+  tier: string;
   height: number;
   columns: string;
+  maxWidth: number;
   palette: { edge: string; text: string; glow: string };
+  logos: { src: string; alt: string }[];
 }[] = [
   {
+    tier: "Title Sponsor",
+    height: 260,
+    columns: "1fr",
+    maxWidth: 760,
+    palette: { edge: "#C83C28", text: "#EFE6D4", glow: "rgba(200,60,40,0.24)" },
+    logos: [{ src: "/sponsor-american-heritage.png", alt: "American Heritage Schools" }],
+  },
+  {
     tier: "Diamond",
-    count: 1,
-    height: 220,
-    columns: "repeat(auto-fit, minmax(280px, 1fr))",
+    height: 200,
+    columns: "1fr",
+    maxWidth: 640,
     palette: M.diamond,
+    logos: [{ src: "/sponsor-schwartzreich.png", alt: "Schwartzreich & Associates, P.A." }],
   },
   {
     tier: "Platinum",
-    count: 2,
-    height: 180,
-    columns: "repeat(auto-fit, minmax(260px, 1fr))",
+    height: 220,
+    columns: "1fr",
+    maxWidth: 420,
     palette: M.platinum,
+    logos: [{ src: "/sponsor-scottish-rite.png", alt: "Scottish Rite" }],
   },
   {
     tier: "Gold",
-    count: 3,
     height: 150,
-    columns: "repeat(auto-fit, minmax(210px, 1fr))",
+    columns: "repeat(auto-fit, minmax(220px, 1fr))",
+    maxWidth: 1100,
     palette: M.gold,
-  },
-  {
-    tier: "Silver",
-    count: 6,
-    height: 118,
-    columns: "repeat(auto-fit, minmax(150px, 1fr))",
-    palette: M.silver,
+    logos: [
+      { src: "/sponsor-aqua-realty.png", alt: "Aqua Realty Services" },
+      { src: "/sponsor-odonnell.png", alt: "The O'Donnell Law Firm" },
+      { src: "/sponsor-maister-law.png", alt: "Maister Law" },
+    ],
   },
 ];
 /* ---------------------- SILENT AUCTION ---------------------- */
@@ -1812,13 +1822,13 @@ export default function Page() {
               marginBottom: 46,
             }}
           >
-            These spots are open. Every business that steps up gets its logo on
-            this wall, on the signage at the venue, and in front of a room full
-            of families from right here in South Florida.
+            Thank you to the businesses and organizations backing the show.
+            Their support puts every dollar of every ticket to work for kids in
+            South Florida.
           </p>
 
           {SPONSOR_WALL.map((row) => (
-            <div key={row.tier} style={{ marginBottom: 40 }}>
+            <div key={row.tier} style={{ marginBottom: 44 }}>
               <div
                 style={{
                   display: "flex",
@@ -1853,50 +1863,35 @@ export default function Page() {
                   display: "grid",
                   gridTemplateColumns: row.columns,
                   gap: 16,
+                  maxWidth: row.maxWidth,
+                  margin: "0 auto",
                 }}
               >
-                {Array.from({ length: row.count }).map((_, i) => (
+                {row.logos.map((logo) => (
                   <div
-                    key={`${row.tier}-${i}`}
+                    key={logo.src}
                     style={{
-                      height: row.height,
-                      border: `1px solid ${row.palette.edge}66`,
+                      border: `1px solid ${row.palette.edge}88`,
                       background: `linear-gradient(180deg, ${row.palette.glow} 0%, rgba(0,0,0,0) 100%), ${C.ink2}`,
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 10,
-                      textAlign: "center",
-                      padding: 14,
+                      padding: 12,
                     }}
                   >
-                    <Star
-                      size={row.tier === "Silver" ? 12 : 16}
-                      color={row.palette.edge}
-                    />
                     <div
                       style={{
-                        fontFamily: display,
-                        fontSize: row.tier === "Silver" ? 15 : 19,
-                        letterSpacing: "0.06em",
-                        textTransform: "uppercase",
-                        color: row.palette.text,
-                        lineHeight: 1.1,
+                        position: "relative",
+                        height: row.height,
+                        background: "#FFFFFF",
                       }}
                     >
-                      Your Logo Here
-                    </div>
-                    <div
-                      style={{
-                        fontSize: 9,
-                        fontWeight: 700,
-                        letterSpacing: "0.22em",
-                        textTransform: "uppercase",
-                        color: C.muted,
-                      }}
-                    >
-                      {row.tier} Spot
+                      <div style={{ position: "absolute", inset: 18 }}>
+                        <Image
+                          src={logo.src}
+                          alt={logo.alt}
+                          fill
+                          sizes="(max-width: 700px) 90vw, 700px"
+                          style={{ objectFit: "contain" }}
+                        />
+                      </div>
                     </div>
                   </div>
                 ))}
