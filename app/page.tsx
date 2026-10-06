@@ -29,6 +29,11 @@ const SONGS = [
     spotifyId: "29WpbMNslGsCCzzdWI1KT6",
     apple: "https://music.apple.com/us/album/one-shot/6779890913?i=6779890914",
   },
+    {
+    title: "See You Walkin'",
+    spotifyId: "5g0k1r6Z7y2X3n8J9v1K4L",
+    apple: "https://music.apple.com/us/album/see-you-walking-there/6816581495?i=6816581496",
+  },
 ];
 const MAPS =
   "https://www.google.com/maps/search/?api=1&query=471+NW+3rd+St+Miami+FL";
@@ -399,11 +404,11 @@ const SPONSOR_WALL: {
     logos: [{ src: "/sponsor-american-heritage.png", alt: "American Heritage Schools" }],
   },
   {
-    tier: "Gold",
+    tier: "Silver",
     height: 150,
     columns: "repeat(auto-fit, minmax(200px, 1fr))",
     maxWidth: 1100,
-    palette: M.gold,
+    palette: M.silver,
     logos: [
       { src: "/sponsor-schwartzreich.png", alt: "Schwartzreich & Associates, P.A." },
       { src: "/sponsor-scottish-rite.png", alt: "Scottish Rite" },
