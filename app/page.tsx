@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -13,6 +13,7 @@ const NAV: [string, string][] = [
   ["The Cause", "#cause"],
   ["Tickets", "#tickets"],
   ["Sponsors", "#sponsors"],
+  ["Auction", "#auction"],
   ["The Band", "#band"],
   ["Parking", "#parking"],
 ];
@@ -418,7 +419,503 @@ const SPONSOR_WALL: {
     palette: M.silver,
   },
 ];
+/* ---------------------- SILENT AUCTION ---------------------- */
 
+type Lot = {
+  title: string;
+  sub: string;
+  img: string;
+  portrait: boolean;
+  bg: string;
+  body: string;
+  value: string;
+  start: string;
+};
+
+const LOTS: Lot[] = [
+  {
+    title: "Patriot Guitar",
+    sub: "Signed by Static Rebellion",
+    img: "/auction-guitar.jpg",
+    portrait: false,
+    bg: "#000",
+    body: "An American flag guitar signed by the band and played live on stage at Rock for a Cause. Own a piece of the show.",
+    value: "$300",
+    start: "$150",
+  },
+  {
+    title: "Decked-Out Golf Cart",
+    sub: "MSRP $10,000",
+    img: "/auction-golf-cart.jpg",
+    portrait: false,
+    bg: "#000",
+    body: "Ride in style with a fully decked-out golf cart, loaded with upgrades and valued at an MSRP of $10,000.",
+    value: "$10,000",
+    start: "$5,000",
+  },
+  {
+    title: "Philip Stein Men\u2019s Watch",
+    sub: "Two time zones, one wrist",
+    img: "/auction-watch-men.jpg",
+    portrait: true,
+    bg: "#24140A",
+    body: "A stylish, sophisticated timepiece. The perfect blend of luxury, style and wellness.",
+    value: "$965",
+    start: "$482.50",
+  },
+  {
+    title: "Philip Stein Ladies\u2019 Watch",
+    sub: "Rose gold on white",
+    img: "/auction-watch-ladies.jpg",
+    portrait: true,
+    bg: "#24140A",
+    body: "Elegant and timeless design. The perfect blend of luxury, style and wellness.",
+    value: "$945",
+    start: "$472.50",
+  },
+  {
+    title: "Beatles Artwork",
+    sub: "By Doron Viner",
+    img: "/auction-beatles.jpg",
+    portrait: true,
+    bg: "#000",
+    body: "Bring home a piece of music history with this striking Beatles piece by renowned artist Doron Viner. A must-have for any Beatles, music or art lover.",
+    value: "$5,000",
+    start: "$2,500",
+  },
+  {
+    title: "Private Acting Class",
+    sub: "With Mr. A, Acay Abraham of Abstrakt Acting",
+    img: "/auction-acting.jpg",
+    portrait: true,
+    bg: "#070303",
+    body: "Build confidence. Find your voice. Grow creativity and on-camera performance skills in a private class with Mr. A.",
+    value: "$150",
+    start: "$75",
+  },
+  {
+    title: "Private Piano Lesson",
+    sub: "With Michael Bendoyim",
+    img: "/auction-piano.jpg",
+    portrait: false,
+    bg: "#000",
+    body: "A one-hour private lesson with classical pianist Michael Bendoyim, a conservatory graduate who has toured Germany and performed with the South Florida Orchestra.",
+    value: "$150",
+    start: "$75",
+  },
+  {
+    title: "Three Nights at The Pullman",
+    sub: "Nashville, courtesy of Sun & Sea Ventures",
+    img: "/auction-pullman.jpg",
+    portrait: false,
+    bg: "#000",
+    body: "Three nights in the heart of downtown Nashville with skyline views, an infinity-edge rooftop pool, a fitness center, a pickleball court, a 24-hour front desk and an assigned parking space.",
+    value: "$6,000",
+    start: "$3,000",
+  },
+];
+
+const PAPER = "#EFE6D4";
+const PAPER_INK = "#1C1714";
+const PAPER_SOFT = "#5C5048";
+const lotNo = (i: number) => String(i + 1).padStart(2, "0");
+
+function LotImage({ i, mobile }: { i: number; mobile?: boolean }) {
+  const lot = LOTS[i];
+  const contain = mobile && lot.portrait;
+  return (
+    <div style={{ position: "absolute", inset: 0, background: lot.bg, overflow: "hidden" }}>
+      <Image
+        src={lot.img}
+        alt={lot.title}
+        fill
+        sizes="(max-width: 899px) 100vw, 520px"
+        style={{ objectFit: contain ? "contain" : "cover" }}
+      />
+      {!mobile ? (
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(to right, rgba(0,0,0,0) 78%, rgba(0,0,0,0.38) 100%)",
+          }}
+        />
+      ) : null}
+    </div>
+  );
+}
+
+function LotDetails({ i, mobile }: { i: number; mobile?: boolean }) {
+  const lot = LOTS[i];
+  return (
+    <div
+      style={{
+        position: mobile ? "relative" : "absolute",
+        inset: mobile ? undefined : 0,
+        background: PAPER,
+        color: PAPER_INK,
+        padding: mobile ? "26px 22px 24px" : "44px 46px 38px 52px",
+        display: "flex",
+        flexDirection: "column",
+        backgroundImage: mobile
+          ? undefined
+          : "linear-gradient(to right, rgba(0,0,0,0.16) 0%, rgba(0,0,0,0) 9%)",
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
+        <span style={{ fontFamily: display, fontSize: 22, color: C.red, textTransform: "uppercase" }}>
+          Lot {lotNo(i)}
+        </span>
+        <span style={{ fontSize: 13, color: PAPER_SOFT }}>of {lotNo(LOTS.length - 1)}</span>
+      </div>
+
+      <h3
+        style={{
+          fontFamily: display,
+          fontSize: mobile ? "clamp(30px, 8vw, 38px)" : 44,
+          lineHeight: 0.95,
+          textTransform: "uppercase",
+          marginTop: 16,
+          color: PAPER_INK,
+        }}
+      >
+        {lot.title}
+      </h3>
+
+      <div
+        style={{
+          marginTop: 12,
+          fontSize: 12,
+          fontWeight: 700,
+          letterSpacing: "0.14em",
+          textTransform: "uppercase",
+          color: C.red,
+          lineHeight: 1.5,
+        }}
+      >
+        {lot.sub}
+      </div>
+
+      <p style={{ marginTop: 18, fontSize: 16, lineHeight: 1.65, color: PAPER_SOFT, flexGrow: 1 }}>
+        {lot.body}
+      </p>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          borderTop: `2px solid ${PAPER_INK}`,
+          marginTop: 24,
+          paddingTop: 16,
+          gap: 12,
+        }}
+      >
+        <div>
+          <div style={{ fontSize: 12, color: PAPER_SOFT }}>Value</div>
+          <div style={{ fontFamily: display, fontSize: 30, lineHeight: 1, marginTop: 6, color: PAPER_INK }}>
+            {lot.value}
+          </div>
+        </div>
+        <div>
+          <div style={{ fontSize: 12, color: PAPER_SOFT }}>Starting bid</div>
+          <div style={{ fontFamily: display, fontSize: 30, lineHeight: 1, marginTop: 6, color: C.red }}>
+            {lot.start}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AuctionBook() {
+  const n = LOTS.length;
+  const [cur, setCur] = useState(0);
+  const [turn, setTurn] = useState<{ to: number; dir: 1 | -1 } | null>(null);
+  const [wide, setWide] = useState(true); // only used for animation timing
+  const [reduced, setReduced] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const touchX = useRef<number | null>(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 900px)");
+    const rm = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => {
+      setWide(mq.matches);
+      setReduced(rm.matches);
+    };
+    sync();
+    mq.addEventListener("change", sync);
+    return () => {
+      mq.removeEventListener("change", sync);
+      if (timer.current) clearTimeout(timer.current);
+    };
+  }, []);
+
+  const flip = (dir: 1 | -1, target?: number) => {
+    if (turn) return;
+    const to = target ?? (cur + dir + n) % n;
+    if (to === cur) return;
+    if (reduced) {
+      setCur(to);
+      return;
+    }
+    setTurn({ to, dir });
+    timer.current = setTimeout(() => {
+      setCur(to);
+      setTurn(null);
+    }, wide ? 820 : 480);
+  };
+
+  const onKey = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowRight") flip(1);
+    if (e.key === "ArrowLeft") flip(-1);
+  };
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchX.current = e.touches[0].clientX;
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchX.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchX.current;
+    touchX.current = null;
+    if (dx < -40) flip(1);
+    if (dx > 40) flip(-1);
+  };
+
+  const shown = turn ? turn.to : cur;
+  const leftI = turn ? (turn.dir === 1 ? cur : turn.to) : cur;
+  const rightI = turn ? (turn.dir === 1 ? turn.to : cur) : cur;
+
+  const arrowBtn: React.CSSProperties = {
+    width: 52,
+    height: 52,
+    border: `1px solid ${C.cream}`,
+    background: "transparent",
+    color: C.cream,
+    cursor: "pointer",
+    fontFamily: display,
+    fontSize: 24,
+    lineHeight: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexShrink: 0,
+  };
+
+  return (
+    <div>
+      <style>{`
+        @keyframes sr-turn-fwd { from { transform: rotateY(0deg); } to { transform: rotateY(-180deg); } }
+        @keyframes sr-turn-back { from { transform: rotateY(0deg); } to { transform: rotateY(180deg); } }
+        @keyframes sr-shade { 0% { opacity: 0; } 50% { opacity: 0.45; } 100% { opacity: 0; } }
+        @keyframes sr-leave-fwd { from { transform: rotateY(0deg); opacity: 1; } to { transform: rotateY(-105deg); opacity: 0; } }
+        @keyframes sr-leave-back { from { transform: rotateY(0deg); opacity: 1; } to { transform: rotateY(105deg); opacity: 0; } }
+        .sr-thumbs::-webkit-scrollbar { display: none; }
+        .sr-mob { display: none; }
+        .sr-thumbs { justify-content: center; }
+        @media (max-width: 899px) {
+          .sr-desk { display: none; }
+          .sr-mob { display: block; }
+          .sr-thumbs { justify-content: flex-start; }
+        }
+        .sr-arrow:hover:not(:disabled) { background: ${C.cream} !important; color: ${C.ink} !important; }
+      `}</style>
+
+      <div
+        role="region"
+        aria-roledescription="catalog"
+        aria-label="Silent auction items"
+        tabIndex={0}
+        onKeyDown={onKey}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+        style={{ outlineOffset: 6 }}
+      >
+        {/* ---------- Desktop: open book, two pages ---------- */}
+        <div className="sr-desk">
+          <div
+            style={{
+              background: "#5E1B10",
+              padding: "16px 18px",
+              boxShadow: "0 30px 60px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(0,0,0,0.4)",
+              maxWidth: 1040,
+              margin: "0 auto",
+            }}
+          >
+            <div
+              style={{
+                position: "relative",
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                height: 580,
+                perspective: 2400,
+                boxShadow: "-3px 0 0 #D8CCB2, -6px 0 0 #C4B696, 3px 0 0 #D8CCB2, 6px 0 0 #C4B696",
+              }}
+            >
+              <div style={{ position: "relative" }}>
+                <LotImage i={leftI} />
+              </div>
+              <div style={{ position: "relative" }}>
+                <LotDetails i={rightI} />
+              </div>
+
+              {/* Spine */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  bottom: 0,
+                  left: "50%",
+                  width: 2,
+                  background: "rgba(0,0,0,0.5)",
+                  zIndex: 2,
+                }}
+              />
+
+              {/* The page that turns */}
+              {turn ? (
+                <div
+                  aria-hidden="true"
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    bottom: 0,
+                    width: "50%",
+                    left: turn.dir === 1 ? "50%" : 0,
+                    transformOrigin: turn.dir === 1 ? "left center" : "right center",
+                    transformStyle: "preserve-3d",
+                    animation: `${turn.dir === 1 ? "sr-turn-fwd" : "sr-turn-back"} 0.82s cubic-bezier(.45,.05,.3,1) forwards`,
+                    zIndex: 3,
+                  }}
+                >
+                  <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}>
+                    {turn.dir === 1 ? <LotDetails i={cur} /> : <LotImage i={cur} />}
+                    <div style={{ position: "absolute", inset: 0, background: "#000", animation: "sr-shade 0.82s linear forwards", pointerEvents: "none" }} />
+                  </div>
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      backfaceVisibility: "hidden",
+                      WebkitBackfaceVisibility: "hidden",
+                      transform: "rotateY(180deg)",
+                    }}
+                  >
+                    {turn.dir === 1 ? <LotImage i={turn.to} /> : <LotDetails i={turn.to} />}
+                    <div style={{ position: "absolute", inset: 0, background: "#000", animation: "sr-shade 0.82s linear forwards", pointerEvents: "none" }} />
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </div>
+
+        {/* ---------- Mobile: one page at a time ---------- */}
+        <div className="sr-mob">
+          <div style={{ position: "relative", perspective: 1600 }}>
+            <MobilePage i={shown} />
+            {turn ? (
+              <div
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  transformOrigin: turn.dir === 1 ? "left center" : "right center",
+                  animation: `${turn.dir === 1 ? "sr-leave-fwd" : "sr-leave-back"} 0.48s cubic-bezier(.5,0,.75,0) forwards`,
+                  zIndex: 3,
+                }}
+              >
+                <MobilePage i={cur} />
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </div>
+
+      {/* Controls */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 18,
+          marginTop: 30,
+        }}
+      >
+        <button className="sr-arrow" style={arrowBtn} onClick={() => flip(-1)} aria-label="Previous item">
+          &lsaquo;
+        </button>
+        <div
+          aria-live="polite"
+          style={{
+            fontFamily: display,
+            fontSize: 22,
+            color: C.cream,
+            minWidth: 90,
+            textAlign: "center",
+            fontVariantNumeric: "tabular-nums",
+          }}
+        >
+          {lotNo(shown)} <span style={{ color: C.muted }}>/ {lotNo(n - 1)}</span>
+        </div>
+        <button className="sr-arrow" style={arrowBtn} onClick={() => flip(1)} aria-label="Next item">
+          &rsaquo;
+        </button>
+      </div>
+
+      {/* Thumbnails */}
+      <div
+        className="sr-thumbs"
+        style={{
+          display: "flex",
+          gap: 10,
+          marginTop: 24,
+          overflowX: "auto",
+          scrollbarWidth: "none",
+          paddingBottom: 4,
+        }}
+      >
+        {LOTS.map((lot, i) => (
+          <button
+            key={lot.img}
+            onClick={() => flip(i > cur ? 1 : -1, i)}
+            aria-label={`Go to lot ${lotNo(i)}, ${lot.title}`}
+            aria-current={shown === i}
+            style={{
+              position: "relative",
+              width: 74,
+              height: 74,
+              flexShrink: 0,
+              padding: 0,
+              cursor: "pointer",
+              background: lot.bg,
+              border: `2px solid ${shown === i ? C.red : C.line}`,
+              opacity: shown === i ? 1 : 0.6,
+              transition: "opacity 0.2s ease, border-color 0.2s ease",
+              overflow: "hidden",
+            }}
+          >
+            <Image src={lot.img} alt="" fill sizes="74px" style={{ objectFit: "cover" }} />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MobilePage({ i }: { i: number }) {
+  return (
+    <div style={{ boxShadow: "0 18px 40px rgba(0,0,0,0.5)" }}>
+      <div style={{ position: "relative", height: 300 }}>
+        <LotImage i={i} mobile />
+      </div>
+      <LotDetails i={i} mobile />
+    </div>
+  );
+}
 /* ------------------------------------------------------------------ */
 
 export default function Page() {
@@ -1436,7 +1933,46 @@ export default function Page() {
           </div>
         </div>
       </section>
+      {/* ---------------- SILENT AUCTION ---------------- */}
+      <section
+        id="auction"
+        style={{
+          padding: "96px 0",
+          background: C.ink2,
+          borderBottom: `1px solid ${C.line}`,
+          overflow: "hidden",
+        }}
+      >
+        <div className="wrap">
+          <SectionTitle
+            kicker="Bid in person at the show"
+            title={
+              <>
+                Silent
+                <br />
+                <span style={{ color: C.red }}>auction</span>
+              </>
+            }
+          />
 
+          <p
+            style={{
+              fontSize: 17,
+              lineHeight: 1.7,
+              color: C.muted,
+              maxWidth: 560,
+              marginTop: -24,
+              marginBottom: 46,
+            }}
+          >
+            Eight lots, over $23,000 in donated items. Flip through the
+            catalog now, then come place your bids. Bidding opens with doors at
+            1:30 PM and winners are announced at 5:50 PM.
+          </p>
+
+          <AuctionBook />
+        </div>
+      </section>
       {/* ---------------- THE BAND ---------------- */}
       <section id="band" style={{ padding: "96px 0" }}>
         <div className="wrap">
