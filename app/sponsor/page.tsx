@@ -36,70 +36,39 @@ const C = {
 
 const M = {
   silver: { edge: "#B9BEC4", text: "#D8DDE2", glow: "rgba(185,190,196,0.16)" },
-  gold: { edge: "#D4AF37", text: "#EBC85B", glow: "rgba(212,175,55,0.16)" },
-  platinum: { edge: "#CFD8DF", text: "#E8EFF4", glow: "rgba(207,216,223,0.18)" },
-  diamond: { edge: "#4FA3D9", text: "#8FD0F5", glow: "rgba(79,163,217,0.20)" },
+  title: { edge: "#C83C28", text: "#EFE6D4", glow: "rgba(200,60,40,0.24)" },
 };
 
 const display = "var(--font-display), Impact, sans-serif";
 
 const LEVELS = [
   {
+    id: "Title Sponsor",
+    name: "Title Sponsor",
+    price: null as string | null,
+    tickets: null as string | null,
+    palette: M.title,
+    lead: null as string | null,
+    perks: [
+      "Featured as the Title Sponsor of Rock for a Cause",
+      "Largest logo placement on the website and signage",
+      "Recognition from the stage",
+      "Featured social media spotlight",
+      "Private meet and greet with the band",
+      "Your rep speaks on stage, plus a plaque",
+    ],
+  },
+  {
     id: "Silver, $1,000",
     name: "Silver",
-    price: "$1,000",
-    tickets: "2 VIP Tickets",
+    price: "$1,000" as string | null,
+    tickets: "2 VIP Tickets" as string | null,
     palette: M.silver,
     lead: null as string | null,
     perks: [
       "Company logo on the event website",
       "Recognition on social media",
       "Name listed on sponsor signage",
-    ],
-  },
-  {
-    id: "Gold, $5,000",
-    name: "Gold",
-    price: "$5,000",
-    tickets: "6 VIP Tickets",
-    palette: M.gold,
-    lead: "Everything in Silver, plus:",
-    perks: [
-      "Medium logo on marketing materials",
-      "Recognition during the live event",
-      "Linked logo on the event website",
-      "Meet and greet with the band",
-    ],
-  },
-  {
-    id: "Platinum, $10,000",
-    name: "Platinum",
-    price: "$10,000",
-    tickets: "10 VIP Tickets",
-    palette: M.platinum,
-    lead: "Everything in Gold, plus:",
-    perks: [
-      "Premium logo placement on signage",
-      "Recognition from the stage",
-      "Featured social media spotlight",
-      "Promotional materials at the venue",
-      "Photo with Static Rebellion",
-    ],
-  },
-  {
-    id: "Diamond, $20,000",
-    name: "Diamond",
-    price: "$20,000",
-    tickets: "15 VIP Tickets",
-    palette: M.diamond,
-    lead: "Everything in Platinum, plus:",
-    perks: [
-      "Featured as Presenting Sponsor",
-      "On-stage acknowledgment",
-      "Dedicated spotlight on the website",
-      "Booth or display space",
-      "Private meet and greet, event t-shirts",
-      "Your rep speaks on stage, plus a plaque",
     ],
   },
 ];
@@ -648,13 +617,13 @@ export default function SponsorPage() {
         </section>
       ) : (
         <>
-          {/* ---------------- 01 PICK YOUR LEVEL ---------------- */}
+                    {/* ---------------- 01 PICK YOUR LEVEL ---------------- */}
           <section style={{ padding: "72px 0 0" }}>
             <div className="wrap">
               <StepHead
                 n="01"
                 title="Pick your level"
-                note="Tap a level to select it. Every level above Silver includes everything below it."
+                note="Tap a level to select it."
               />
 
               <div
@@ -708,32 +677,36 @@ export default function SponsorPage() {
                         </span>
                       </div>
 
-                      <div
-                        style={{
-                          fontFamily: display,
-                          fontSize: 40,
-                          textAlign: "center",
-                          color: C.cream,
-                          marginTop: 8,
-                          lineHeight: 1,
-                        }}
-                      >
-                        {t.price}
-                      </div>
+                      {t.price ? (
+                        <div
+                          style={{
+                            fontFamily: display,
+                            fontSize: 40,
+                            textAlign: "center",
+                            color: C.cream,
+                            marginTop: 8,
+                            lineHeight: 1,
+                          }}
+                        >
+                          {t.price}
+                        </div>
+                      ) : null}
 
-                      <div
-                        style={{
-                          marginTop: 12,
-                          textAlign: "center",
-                          fontSize: 11,
-                          fontWeight: 700,
-                          letterSpacing: "0.2em",
-                          textTransform: "uppercase",
-                          color: t.palette.text,
-                        }}
-                      >
-                        {t.tickets}
-                      </div>
+                      {t.tickets ? (
+                        <div
+                          style={{
+                            marginTop: 12,
+                            textAlign: "center",
+                            fontSize: 11,
+                            fontWeight: 700,
+                            letterSpacing: "0.2em",
+                            textTransform: "uppercase",
+                            color: t.palette.text,
+                          }}
+                        >
+                          {t.tickets}
+                        </div>
+                      ) : null}
 
                       <div
                         style={{

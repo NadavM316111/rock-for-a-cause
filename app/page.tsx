@@ -413,6 +413,7 @@ const SPONSOR_WALL: {
       { src: "/sponsor-schwartzreich.png", alt: "Schwartzreich & Associates, P.A." },
       { src: "/sponsor-scottish-rite.png", alt: "Scottish Rite" },
       { src: "/sponsor-aqua-realty.png", alt: "Aqua Realty Services" },
+      { src: "/sponsor-gottlieb.png", alt: "Michael A. Gottlieb, P.A." },
       { src: "/sponsor-odonnell.png", alt: "The O'Donnell Law Firm" },
       { src: "/sponsor-maister-law.png", alt: "Maister Law" },
     ],
