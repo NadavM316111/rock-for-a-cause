@@ -380,8 +380,6 @@ const BENEFICIARIES = [
     ],
   },
 ];
-
-/* ---------------------- SPONSOR WALL ---------------------- */
 /* ---------------------- SPONSOR WALL ---------------------- */
 
 const SPONSOR_WALL: {
@@ -401,28 +399,14 @@ const SPONSOR_WALL: {
     logos: [{ src: "/sponsor-american-heritage.png", alt: "American Heritage Schools" }],
   },
   {
-    tier: "Diamond",
-    height: 200,
-    columns: "1fr",
-    maxWidth: 640,
-    palette: M.diamond,
-    logos: [{ src: "/sponsor-schwartzreich.png", alt: "Schwartzreich & Associates, P.A." }],
-  },
-  {
-    tier: "Platinum",
-    height: 220,
-    columns: "1fr",
-    maxWidth: 420,
-    palette: M.platinum,
-    logos: [{ src: "/sponsor-scottish-rite.png", alt: "Scottish Rite" }],
-  },
-  {
     tier: "Gold",
     height: 150,
-    columns: "repeat(auto-fit, minmax(220px, 1fr))",
+    columns: "repeat(auto-fit, minmax(200px, 1fr))",
     maxWidth: 1100,
     palette: M.gold,
     logos: [
+      { src: "/sponsor-schwartzreich.png", alt: "Schwartzreich & Associates, P.A." },
+      { src: "/sponsor-scottish-rite.png", alt: "Scottish Rite" },
       { src: "/sponsor-aqua-realty.png", alt: "Aqua Realty Services" },
       { src: "/sponsor-odonnell.png", alt: "The O'Donnell Law Firm" },
       { src: "/sponsor-maister-law.png", alt: "Maister Law" },
