@@ -430,6 +430,9 @@ type Lot = {
   body: string;
   value: string;
   start: string;
+  logo: string;
+  logoH: number;
+  courtesy: string;
 };
 
 const LOTS: Lot[] = [
@@ -437,6 +440,9 @@ const LOTS: Lot[] = [
     title: "Patriot Guitar",
     sub: "Signed by Static Rebellion",
     img: "/auction-guitar.jpg",
+    logo: "/logo-auction-sr.png",
+    logoH: 120,
+    courtesy: "Static Rebellion",
     portrait: false,
     bg: "#000",
     body: "An American flag guitar signed by the band and played live on stage at Rock for a Cause. Own a piece of the show.",
@@ -447,6 +453,9 @@ const LOTS: Lot[] = [
     title: "Decked-Out Golf Cart",
     sub: "MSRP $10,000",
     img: "/auction-golf-cart.jpg",
+    logo: "/logo-auction-denago.png",
+    logoH: 54,
+    courtesy: "Denago EV",
     portrait: false,
     bg: "#000",
     body: "Ride in style with a fully decked-out golf cart, loaded with upgrades and valued at an MSRP of $10,000.",
@@ -457,6 +466,9 @@ const LOTS: Lot[] = [
     title: "Philip Stein Men\u2019s Watch",
     sub: "Two time zones, one wrist",
     img: "/auction-watch-men.jpg",
+    logo: "/logo-auction-philipstein.png",
+    logoH: 66,
+    courtesy: "Philip Stein",
     portrait: true,
     bg: "#24140A",
     body: "A stylish, sophisticated timepiece. The perfect blend of luxury, style and wellness.",
@@ -467,6 +479,9 @@ const LOTS: Lot[] = [
     title: "Philip Stein Ladies\u2019 Watch",
     sub: "Rose gold on white",
     img: "/auction-watch-ladies.jpg",
+    logo: "/logo-auction-philipstein.png",
+    logoH: 66,
+    courtesy: "Philip Stein",
     portrait: true,
     bg: "#24140A",
     body: "Elegant and timeless design. The perfect blend of luxury, style and wellness.",
@@ -477,6 +492,9 @@ const LOTS: Lot[] = [
     title: "Beatles Artwork",
     sub: "By Doron Viner",
     img: "/auction-beatles.jpg",
+    logo: "/logo-auction-doron.png",
+    logoH: 130,
+    courtesy: "Doron Viner, The Art Gallery",
     portrait: true,
     bg: "#000",
     body: "Bring home a piece of music history with this striking Beatles piece by renowned artist Doron Viner. A must-have for any Beatles, music or art lover.",
@@ -487,6 +505,9 @@ const LOTS: Lot[] = [
     title: "Private Acting Class",
     sub: "With Mr. A, Acay Abraham of Abstrakt Acting",
     img: "/auction-acting.jpg",
+    logo: "/logo-auction-abstrakt.png",
+    logoH: 130,
+    courtesy: "Abstrakt Acting",
     portrait: true,
     bg: "#070303",
     body: "Build confidence. Find your voice. Grow creativity and on-camera performance skills in a private class with Mr. A.",
@@ -497,6 +518,9 @@ const LOTS: Lot[] = [
     title: "Private Piano Lesson",
     sub: "With Michael Bendoyim",
     img: "/auction-piano.jpg",
+    logo: "/logo-auction-bendoyim.png",
+    logoH: 120,
+    courtesy: "Bendoyim Piano Lessons",
     portrait: false,
     bg: "#000",
     body: "A one-hour private lesson with classical pianist Michael Bendoyim, a conservatory graduate who has toured Germany and performed with the South Florida Orchestra.",
@@ -507,6 +531,9 @@ const LOTS: Lot[] = [
     title: "Three Nights at The Pullman",
     sub: "Nashville, courtesy of Sun & Sea Ventures",
     img: "/auction-pullman.jpg",
+    logo: "/logo-auction-sunsea.png",
+    logoH: 130,
+    courtesy: "Sun & Sea Ventures",
     portrait: false,
     bg: "#000",
     body: "Three nights in the heart of downtown Nashville with skyline views, an infinity-edge rooftop pool, a fitness center, a pickleball court, a 24-hour front desk and an assigned parking space.",
@@ -597,9 +624,39 @@ function LotDetails({ i, mobile }: { i: number; mobile?: boolean }) {
         {lot.sub}
       </div>
 
-      <p style={{ marginTop: 18, fontSize: 16, lineHeight: 1.65, color: PAPER_SOFT, flexGrow: 1 }}>
+      <p style={{ marginTop: 18, fontSize: 16, lineHeight: 1.65, color: PAPER_SOFT }}>
         {lot.body}
       </p>
+
+      {/* Donor logo, fills the open space on the page */}
+      <div
+        style={{
+          flexGrow: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          padding: mobile ? "24px 0 4px" : "20px 0",
+          minHeight: mobile ? undefined : lot.logoH + 60,
+        }}
+      >
+        <div style={{ fontSize: 12, color: PAPER_SOFT, marginBottom: 12 }}>Courtesy of</div>
+        <div
+          style={{
+            position: "relative",
+            width: "100%",
+            maxWidth: 300,
+            height: Math.round(lot.logoH * (mobile ? 0.8 : 1)),
+          }}
+        >
+          <Image
+            src={lot.logo}
+            alt={lot.courtesy}
+            fill
+            sizes="300px"
+            style={{ objectFit: "contain", objectPosition: "left center" }}
+          />
+        </div>
+      </div>
 
       <div
         style={{
