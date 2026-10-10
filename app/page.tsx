@@ -553,8 +553,8 @@ const LOTS: Lot[] = [
     portrait: false,
     bg: "#0B0F1A",
     body: "A Style Statement.",
-    value: "$???",
-    start: "$???",
+    value: "$495",
+    start: "$247.50",
   },
 ];
 
