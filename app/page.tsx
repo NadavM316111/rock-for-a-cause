@@ -543,6 +543,19 @@ const LOTS: Lot[] = [
     value: "$6,000",
     start: "$3,000",
   },
+    {
+    title: "Seah Bracelets",
+    sub: "Pink leather with gold star medallions",
+    img: "/auction-seah.jpg",
+    logo: "/logo-auction-seah.png",
+    logoH: 64,
+    courtesy: "Seah, Gift of Time",
+    portrait: false,
+    bg: "#0B0F1A",
+    body: "A Style Statement.",
+    value: "$???",
+    start: "$???",
+  },
 ];
 
 const PAPER = "#EFE6D4";
@@ -2010,7 +2023,7 @@ export default function Page() {
               marginBottom: 46,
             }}
           >
-            Eight lots, over $23,000 in donated items. Flip through the
+            Nine lots, over $23,000 in donated items. Flip through the
             catalog now, then come place your bids. Bidding opens with doors at
             1:30 PM and winners are announced at 5:50 PM.
           </p>
