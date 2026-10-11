@@ -348,16 +348,15 @@ const FACTS = [
   { label: "Ages", value: "All Ages", sub: "Everyone welcome" },
 ];
 const PROGRAM = [
-  { time: "1:30 PM", what: "Doors open, guest check-in, silent auction opens, food trucks, VIP and sponsor reception" },
-  { time: "2:00 PM", what: "Opening and welcome from the MC" },
-  { time: "2:10 PM", what: "School of Rock, opening band" },
-  { time: "2:50 PM", what: "JAFCO speaker" },
-  { time: "2:55 PM", what: "School of Rock, second band" },
-  { time: "3:35 PM", what: "Boys and Girls Club of Broward County speaker" },
-  { time: "3:40 PM", what: "Sponsor and charity recognition, Diamond plaque presentation" },
-  { time: "3:50 PM", what: "Static Rebellion, headlining set one" },
-  { time: "4:50 PM", what: "Intermission, food and photos" },
-  { time: "5:00 PM", what: "Static Rebellion, headlining set two" },
+  { time: "1:30 PM", what: "Doors open, rock playlist on the speakers" },
+  { time: "2:00 PM", what: "School of Rock, opening band" },
+  { time: "2:40 PM", what: "Opening remarks from the MC" },
+  { time: "2:50 PM", what: "School of Rock, second band" },
+  { time: "3:30 PM", what: "Boys and Girls Club of Broward County speaker" },
+  { time: "3:35 PM", what: "Static Rebellion, headlining set one" },
+  { time: "4:35 PM", what: "JAFCO speaker" },
+  { time: "4:40 PM", what: "Plaque presentation to our Title Sponsor" },
+  { time: "4:50 PM", what: "Static Rebellion, headlining set two" },
   { time: "5:50 PM", what: "Closing remarks and silent auction winners" },
 ];
 
@@ -417,6 +416,7 @@ const SPONSOR_WALL: {
       { src: "/sponsor-odonnell.png", alt: "The O'Donnell Law Firm" },
             { src: "/sponsor-newcastle.png", alt: "Newcastle Mobile Notary Public" },
             { src: "/sponsor-mobile-mike.png", alt: "The Mobile Mike Show" },
+            { src: "/sponsor-ap-health.png", alt: "AP Health, Advanced Practice Surgical Partners" },
       { src: "/sponsor-assouline.png", alt: "Assouline Team at Douglas Elliman Real Estate" },
       { src: "/sponsor-maister-law.png", alt: "Maister Law" },
     ],
