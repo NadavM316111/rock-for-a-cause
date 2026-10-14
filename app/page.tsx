@@ -348,7 +348,7 @@ const FACTS = [
   { label: "Ages", value: "All Ages", sub: "Everyone welcome" },
 ];
 const PROGRAM = [
-  { time: "1:30 PM", what: "Doors open, rock playlist on the speakers" },
+  { time: "1:30 PM", what: "Doors open" },
   { time: "2:00 PM", what: "School of Rock, opening band" },
   { time: "2:40 PM", what: "Opening remarks from the MC" },
   { time: "2:50 PM", what: "School of Rock, second band" },
